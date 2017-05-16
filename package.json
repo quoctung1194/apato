@@ -1,0 +1,42 @@
+{
+  "name": "ApartmentManagement",
+  "version": "0.0.1",
+  "private": true,
+  "scripts": {
+    "start": "node node_modules/react-native/local-cli/cli.js start",
+    "test": "jest"
+  },
+  "dependencies": {
+    "apsl-react-native-button": "^3.0.2",
+    "react": "15.4.1",
+    "react-native": "0.39.2",
+    "react-native-animatable": "^1.1.0",
+    "react-native-button": "^1.7.1",
+    "react-native-chart": "^1.0.8-beta",
+    "react-native-check-box": "^1.0.4",
+    "react-native-dropdown": "0.0.6",
+    "react-native-htmlview": "^0.5.0",
+    "react-native-i18n": "^0.1.1",
+    "react-native-image-crop-picker": "^0.11.2",
+    "react-native-ios-charts": "^0.3.0",
+    "react-native-keyboard-aware-scroll-view": "^0.2.6",
+    "react-native-modal-dropdown": "^0.4.0",
+    "react-native-pathjs-charts": "0.0.23",
+    "react-native-pie-chart": "^1.0.4",
+    "react-native-radio-button": "^1.0.2",
+    "react-native-radio-button-classic": "0.0.5",
+    "react-native-simple-radio-button": "^2.4.0",
+    "react-native-splash-screen": "^2.0.0",
+    "react-native-svg": "^4.5.0",
+    "react-timer-mixin": "^0.13.3"
+  },
+  "devDependencies": {
+    "babel-jest": "18.0.0",
+    "babel-preset-react-native": "1.9.1",
+    "jest": "18.0.0",
+    "react-test-renderer": "15.4.1"
+  },
+  "jest": {
+    "preset": "react-native"
+  }
+}
