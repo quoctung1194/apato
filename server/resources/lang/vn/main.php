@@ -54,7 +54,7 @@ return [
 	'type_name' => 'Tên loại',
 	'lock' => 'Khóa',
 	'no' => 'STT',
-	'option' => 'Tủy chỉnh',
+	'option' => 'Tùy chỉnh',
 	
 	//Requirement
 	'requirement' => 'Yêu cầu',
@@ -94,4 +94,13 @@ return [
 	'invalid_room' => 'Phòng không tồn tại',
 	'successful' => 'Đăng kí thành công',
 	'invalid_register' => 'Đăng kí thất bại',
+	'admin_residential' => 'Admin - Dân cư',
+	'id_card' => 'Số CMND',
+	'magnetic_card_code' => 'Số thẻ từ',
+	'birthday' => 'Ngày sinh',
+	'married' => 'Có gia đình',
+	'population' => 'Số nhân khẩu',
+	'family_register_status' => 'Đã đăng ký tạm trú / Có hộ khẩu chung cư',
+	'residential_start_at' => 'Ngày vào',
+	'note' => 'Ghi chú',
 ];

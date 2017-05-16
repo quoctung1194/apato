@@ -129,4 +129,15 @@ Route::group(['prefix' => 'management',
 	Route::group(['prefix' => 'providerServiceType'], function(){
 		Route::get('/list/json/{serviceTypeId?}', 'ProviderServiceTypeController@getJsonList')->name('MPST-001');
 	});
+
+	Route::group(['prefix' => 'adminResidential'], function(){
+		Route::get('/showList', 'AdminResidentialController@showList')->name('MAR-001');
+		Route::get('/list/json', 'AdminResidentialController@getJsonList')->name('MAR-002');
+		Route::get('/edit/{id?}', 'AdminResidentialController@edit')->name('MAR-003');
+		Route::post('/remove', 'AdminResidentialController@remove')->name('MAR-004');
+		Route::post('/lock', 'AdminResidentialController@lock')->name('MAR-005');
+		Route::post('/edit/save', 'AdminResidentialController@save')->name('MAR-006');
+		Route::get('/floorList/json', 'AdminResidentialController@getJsonFloorList')->name('MAR-007');
+		Route::get('/roomList/json', 'AdminResidentialController@getJsonRoomList')->name('MAR-008');
+	});
 });
