@@ -1,14 +1,28 @@
 var isSubmited = false;
 
 $(document).ready(function() {
+    var date = new Date();
+    var now = date.getFullYear();
+
     $('#birthday').datetimepicker({
         format: 'Y-m-d',
         timepicker: false,
+        maxDate : '0',
     });
+
     $("#gender").select2( { placeholder: "Chọn cách xưng hô" } );
     $("#block").select2( { placeholder: "Chọn block" } );
     $("#floor").select2( { placeholder: "Chọn tầng" } );
     $("#room").select2( { placeholder: "Chọn phòng" } );
+
+    $('#start_at').combodate({
+        minYear: 1975,
+        maxYear: now,
+    });
+});
+
+$(document).ready(function() { 
+    $('span.combodate').find('select').addClass('form-control').css( "display", "inline" );
 });
 
 /**

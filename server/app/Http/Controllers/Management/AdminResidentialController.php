@@ -19,7 +19,12 @@ class AdminResidentialController extends Controller {
     }
 
     public function showList() {
-        return $this->view('showList');
+        $admin = auth()->guard('admin')->user();
+        $apartmentId = $admin->apartment_id;
+        $action = new AdminResidentialAction();
+
+        $data['residentialStatistics'] = $action->getResidentialStatistic($apartmentId);
+        return $this->view('showList', $data);
     }
 
     public function getJsonList(Request $request) {
@@ -92,7 +97,7 @@ class AdminResidentialController extends Controller {
         $validates['block'] = 'required';
         $validates['floor'] = 'required';
         $validates['room'] = 'required';
-        //$validates['start_at'] = 'required';
+        $validates['start_at'] = 'required';
         $validates['note'] = 'required|max:1000';
         
         $validator = Validator::make($request->all(), $validates);
@@ -100,16 +105,16 @@ class AdminResidentialController extends Controller {
         if ($validator->fails()) {
             $errors = $validator->errors();
             $errors = json_decode($errors);
-        
-            return response()->json([
+       
+             return response()->json([
                     'success' => false,
                     'message' => $errors
                     ]);
         }
         
         $action =  new AdminResidentialAction();
-        $user = $action->save($request->all());
-    
+        $user = $action->save($request->all()); 
+   
         if($user == null) {
             abort(500);
         }
