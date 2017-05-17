@@ -76,9 +76,9 @@
                         <li {{ ($menu == 'MS') ? 'class=active' : '' }}>
                             <a href="{{ route('MM-004') }}">@lang('main.opinion_survey')</a>
                         </li>
-                        <li>
+                        <!-- <li>
                             <a href="#">Cư dân chung cư<br></a>
-                        </li>
+                        </li> -->
                         <li {{ ($menu == 'MR') ? 'class=active' : '' }}>
                             <a href="{{ route('MR-001') }}">@lang('main.requirement')</a>
                         </li>

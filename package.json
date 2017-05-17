@@ -21,6 +21,7 @@
     "react-native-ios-charts": "^0.3.0",
     "react-native-keyboard-aware-scroll-view": "^0.2.6",
     "react-native-modal-dropdown": "^0.4.0",
+    "react-native-onesignal": "^3.0.3",
     "react-native-pathjs-charts": "0.0.23",
     "react-native-pie-chart": "^1.0.4",
     "react-native-radio-button": "^1.0.2",
