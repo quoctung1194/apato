@@ -5,16 +5,15 @@ use App\Constants\CommonConstant;
 @extends('managements.master')
 
 @section('content')
+<!-- Combobox date -->
+<script src="{{ URL::asset('js/moment.js') }}"></script>
+<script src="{{ URL::asset('js/combodate.js') }}"></script>
+
 <!-- Combobox select2 -->
 <link rel="stylesheet" href="{{ URL::asset('resources/select2/select2.css?v=' . CommonConstant::RESOURCE_VERSION) }}">
 <link rel="stylesheet" href="{{ URL::asset('resources/select2/select2-bootstrap.css?v=' . CommonConstant::RESOURCE_VERSION) }}">
 <link rel="stylesheet" href="{{ URL::asset('resources/select2/gh-pages.css?v=' . CommonConstant::RESOURCE_VERSION) }}">
 <script src="{{ URL::asset('resources/select2/select2.js?v=' . CommonConstant::RESOURCE_VERSION) }}"></script>
-
-<!-- Datatable -->
-<script src="{{ URL::asset('resources/datatables/jquery.dataTables.min.js?v=' . CommonConstant::RESOURCE_VERSION) }}"></script>
-<script src="{{ URL::asset('resources/datatables/dataTables.bootstrap.min.js?v=' . CommonConstant::RESOURCE_VERSION) }}"></script>
-<link rel="stylesheet" href="{{ URL::asset('resources/datatables/dataTables.bootstrap.css?v=' . CommonConstant::RESOURCE_VERSION) }}">
 
 <script src="{{ URL::asset('js/management/adminResidential/edit.js?v=' . CommonConstant::RESOURCE_VERSION) }}"></script>
 
@@ -185,7 +184,8 @@ use App\Constants\CommonConstant;
                         <label name='validate' class="control-label">@lang('main.residential_start_at')</label>
                     </td>
                     <td style="padding-left: 10px">
-                    
+                        <input type="text" id="start_at" data-format="YYYY-MM-DD" data-template="D MMM YYYY" name="start_at" value="{{ empty($user->start_at) ? date("Y-m-d") : $user->start_at }}"/>
+                        <label name='validate' value='start_at_error' style="color: red"></label>
                     </td>
                 </tr>
                 <tr>
