@@ -56,16 +56,6 @@ INSERT INTO `floors` VALUES (1,1,5,0,NULL,NULL,NULL),(2,2,5,0,NULL,NULL,NULL),(3
 UNLOCK TABLES;
 
 --
--- Dumping data for table `migrations`
---
-
-LOCK TABLES `migrations` WRITE;
-/*!40000 ALTER TABLE `migrations` DISABLE KEYS */;
-INSERT INTO `migrations` VALUES (1,'2014_10_12_000000_create_users_table',1),(2,'2014_10_12_100000_create_password_resets_table',1),(3,'2016_12_27_151358_create_table_notification',2),(4,'2016_12_27_151421_apartment',3),(5,'2017_01_03_145851_create_servey_options_table',4),(6,'2017_01_03_150316_create_user_surveys_table',4),(9,'2017_01_13_153803_create_setting_table',5),(10,'2017_01_14_022316_create_requirements_table',6),(11,'2017_01_14_122347_create_requirement_images_table',7),(12,'2017_01_15_142604_create_admins_table',8),(13,'2017_02_14_150206_create_service_types_table',9),(14,'2017_02_14_215958_create_services_table',10),(15,'2017_02_15_150929_create_providers_table',11),(16,'2017_02_15_151441_create_providers_service_types_table',11),(17,'2017_02_16_090744_create_service_apartments_table',12),(18,'2017_02_19_134027_create_block_table',13),(19,'2017_02_19_134549_create_floor_table',14),(20,'2017_02_19_134826_create_room_table',14),(21,'2017_02_19_141039_create_service_click_table',15),(22,'2017_02_19_150103_create_service_re_call_table',15),(23,'2017_02_19_235034_create_service_calls_table',16),(24,'2017_05_19_001248_create_admins_table',0),(25,'2017_05_19_001248_create_apartments_table',0),(26,'2017_05_19_001248_create_blocks_table',0),(27,'2017_05_19_001248_create_floors_table',0),(28,'2017_05_19_001248_create_notifications_table',0),(29,'2017_05_19_001248_create_password_resets_table',0),(30,'2017_05_19_001248_create_provider_service_types_table',0),(31,'2017_05_19_001248_create_providers_table',0),(32,'2017_05_19_001248_create_requirement_images_table',0),(33,'2017_05_19_001248_create_requirements_table',0),(34,'2017_05_19_001248_create_rooms_table',0),(35,'2017_05_19_001248_create_service_apartments_table',0),(36,'2017_05_19_001248_create_service_calls_table',0),(37,'2017_05_19_001248_create_service_clicks_table',0),(38,'2017_05_19_001248_create_service_re_calls_table',0),(39,'2017_05_19_001248_create_service_types_table',0),(40,'2017_05_19_001248_create_services_table',0),(41,'2017_05_19_001248_create_settings_table',0),(42,'2017_05_19_001248_create_survey_options_table',0),(43,'2017_05_19_001248_create_user_surveys_table',0),(44,'2017_05_19_001248_create_users_table',0);
-/*!40000 ALTER TABLE `migrations` ENABLE KEYS */;
-UNLOCK TABLES;
-
---
 -- Dumping data for table `notifications`
 --
 
