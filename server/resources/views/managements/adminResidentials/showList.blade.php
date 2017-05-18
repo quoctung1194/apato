@@ -38,4 +38,9 @@ use App\Constants\CommonConstant;
         </thead>
     </table>
 </div>
+<div>
+    @foreach ($residentialStatistics as $residentialStatistic)
+        <p>Block {{ $residentialStatistic->blockName }}: {{ $residentialStatistic->numberOfHousehold }} hộ</p>
+    @endforeach
+</div>
 @endsection

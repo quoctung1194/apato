@@ -147,13 +147,13 @@ class ServiceController extends Controller {
 		
 		$validates = [];
 		$validates['name'] = 'required|min:6|max:100';
-		$validates['url'] = 'required|max:500';
+		//$validates['url'] = 'required|max:500';
 		$validates['phone'] = 'max:50';
 		$validates['content'] = 'required|max:1000';
 		$validates['service_type'] = 'required';
 		$validates['provider'] = 'required';
 		$validates['start_at'] = 'required';
-		$validates['end_at'] = 'required';
+		//$validates['end_at'] = 'required';
 		$validates['apartmentIds'] = 'required';
 		
 		if ($request['id'] == '' || isset($request['image'])) {

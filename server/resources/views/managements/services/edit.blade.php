@@ -141,7 +141,8 @@ use App\Constants\CommonConstant;
 						<br />
 						
 						<label class="control-label">@lang('main.service_end_at')</label>
-						<input type="text" id="end_at" name="end_at" class="form-control" value="{{ $service->end_at }}" />
+						<input type="text" id="end_at" name="end_at" class="form-control"
+							value="{{ (empty($service->end_at) || $service->end_at == '0000-00-00') ? '' : $service->end_at }}" />
 						<label name='validate' value='end_at_error' style="color: red"></label>
 						<br />
 						
@@ -158,7 +159,7 @@ use App\Constants\CommonConstant;
 						
 						<label class="control-label" style="margin-top: 10px">
 							<input type="checkbox" name="re_call" {{ $service->re_call != 0 ? 'checked' : '' }} />
-							@lang('main.user_request_recall_available')
+							@lang('main.user_request_recall')
 						</label>
 						<br />
 					</td>

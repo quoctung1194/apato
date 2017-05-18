@@ -33,26 +33,6 @@ if(Platform.OS == 'ios') {
 	});
 
 } else {
-	OneSignal.configure({onNotificationOpened: function(message, data, isActive) {
-			if(navigator == undefined) {
-				InitSetting.pendingNotification = data;
-			} else {
-				if(isActive) {
-					Alert.alert(
-						'Thong Bao',
-						'Ban nhan duoc thong bao moi, ban co muon xem thong bao nay ngay bay gio hay khong ?',
-						[
-							{text: 'Cancel', onPress: () => console.log('Cancel Pressed') },
-							{text: 'OK', onPress: () => _transToNotification(data)},
-						]
-					);
-				} else {
-				  _transToNotification(data);
-				}
-			}
-		}
-	});
-
 	OneSignal.inFocusDisplaying(0);
 	//Khi App đang được active
 	OneSignal.addEventListener('received', (notification) => {

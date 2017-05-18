@@ -123,7 +123,7 @@ class AdminResidentialAction {
                     ->whereNull('apartments.deleted_at')
 
                     ->where('apartments.id', '=', $apartment_id);
-        return $query->orderBy('name', 'asc')->get();
+        return $query->orderBy('blocks.name', 'asc')->get();
     }
 
     public function getListFloorById($apartment_id, $block_id) {
@@ -141,7 +141,7 @@ class AdminResidentialAction {
 
                     ->where('blocks.id', '=', $block_id)
                     ->where('apartments.id', '=', $apartment_id);
-        return $query->orderBy('name', 'asc')->get();
+        return $query->orderBy('floors.name', 'asc')->get();
     }
 
     public function getListRoomById($apartment_id, $block_id, $floor_id) {
@@ -162,7 +162,7 @@ class AdminResidentialAction {
                     ->where('floors.id', '=', $floor_id)
                     ->where('blocks.id', '=', $block_id)
                     ->where('apartments.id', '=', $apartment_id);
-        return $query->orderBy('name', 'asc')->get();
+        return $query->orderBy('rooms.name', 'asc')->get();
     }
 
     public function lock($id) {
@@ -201,7 +201,7 @@ class AdminResidentialAction {
             $user->birthday = $params['birthday'];
             $user->population = $params['population'];
             $user->room_id = $params['room'];
-            //$user->start_at = $params['start_at'];
+            $user->start_at = $params['start_at'];
             $user->note = $params['note'];
 
             if(!empty($params['gender'])) {
@@ -235,5 +235,23 @@ class AdminResidentialAction {
             DB::rollBack();
             return null;
         }
+    }
+
+    public function getResidentialStatistic($apartment_id) {
+        //Tạo query truy vấn
+        $query = DB::table('blocks')
+                    ->select('blocks.name as blockName',
+                            DB::raw('count(rooms.id) as numberOfHousehold'))
+
+                    ->leftJoin('floors', 'floors.block_id', '=', 'blocks.id')
+                    ->leftJoin('rooms', 'rooms.floor_id', '=', 'floors.id')
+
+                    ->whereNull('rooms.deleted_at')
+                    ->whereNull('floors.deleted_at')
+                    ->whereNull('blocks.deleted_at')
+
+                    ->where('blocks.apartment_id', '=', $apartment_id)
+                    ->groupBy('blocks.id');
+        return $query->orderBy('blocks.name', 'asc')->get();
     }
 }
