@@ -94,6 +94,8 @@ return [
 	'invalid_room' => 'Phòng không tồn tại',
 	'successful' => 'Đăng kí thành công',
 	'invalid_register' => 'Đăng kí thất bại',
+
+	// Admin residential
 	'admin_residential' => 'Admin - Dân cư',
 	'id_card' => 'Số CMND',
 	'magnetic_card_code' => 'Số thẻ từ',
@@ -103,4 +105,18 @@ return [
 	'family_register_status' => 'Đã đăng ký tạm trú / Có hộ khẩu chung cư',
 	'residential_start_at' => 'Ngày vào',
 	'note' => 'Ghi chú',
+
+	// Apartment setting
+	'apartment_setting' => 'Admin/Controller - Chung cư',
+	'address' => 'Địa chỉ',
+	'employer_name' => 'Chủ đầu tư',
+	'complete_year' => 'Năm hoàn thiện',
+	'ward' => 'Phường',
+	'district' => 'Quận',
+	'province' => 'Thành phố',
+	'select_position' => 'Chọn vị trí',
+	'block_number' => 'Số block',
+	'floor_number' => 'Số tầng',
+	'house_over_floor' => 'Số nhà / tầng',
+	'total_household' => 'Tổng số hộ',
 ];

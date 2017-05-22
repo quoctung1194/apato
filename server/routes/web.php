@@ -140,4 +140,11 @@ Route::group(['prefix' => 'management',
 		Route::get('/floorList/json', 'AdminResidentialController@getJsonFloorList')->name('MAR-007');
 		Route::get('/roomList/json', 'AdminResidentialController@getJsonRoomList')->name('MAR-008');
 	});
+
+	Route::group(['prefix' => 'apartmentSetting'], function(){
+		Route::get('/edit', 'ApartmentSettingController@edit')->name('MAS-001');
+		Route::post('/edit/save', 'ApartmentSettingController@save')->name('MAS-002');
+		Route::get('/districtList/json', 'ApartmentSettingController@getJsonDistrictList')->name('MAS-003');
+		Route::get('/wardList/json', 'ApartmentSettingController@getJsonWardList')->name('MAS-004');
+	});
 });
