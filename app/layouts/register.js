@@ -9,13 +9,16 @@ import {
 	TextInput,
 	ScrollView,
   TouchableOpacity,
-  ActivityIndicator
+  ActivityIndicator,
+  TouchableHighlight,
+  Image
 } from 'react-native';
 
 import NavigationBar from '../components/navigationBar';
 import I18n from 'react-native-i18n';
 import ApiUrl from '../constants/apiUrl';
 import InitSetting from '../layouts/initSetting';
+import ModalDropdown from 'react-native-modal-dropdown';
 
 export default class Register extends Component {
 
@@ -27,9 +30,13 @@ export default class Register extends Component {
       confirm_password: '',
       first_name: '',
       last_name: '',
-      room: ''
+      room: '',
+      apartment_id: '',
+      block_id: ''
     },
     isLoading: false,
+    apartments: [],
+    blocks: [],
   }
 
 	render()
@@ -37,7 +44,7 @@ export default class Register extends Component {
 		return (
 			<View style={this.styles.container}>
 				{this.renderStatusBar()}
-				<NavigationBar title={I18n.t('register')} navigator={this.props.navigator} />
+				<NavigationBar title={''} navigator={this.props.navigator} />
 				<ScrollView
 					ref='scrollView'
 					keyboardDismissMode={Platform.OS == 'ios' ? 'on-drag': 'none'}
@@ -73,7 +80,7 @@ export default class Register extends Component {
     let usernameProps = {
       returnKeyType: 'next',
       onSubmitEditing: () => {
-        this.refs['password'].focus();
+        this.refs['email'].focus();
       }
     }
 
@@ -87,7 +94,7 @@ export default class Register extends Component {
     let confirmPasswordProps = {
       returnKeyType: 'next',
       onSubmitEditing: () => {
-        this.refs['first_name'].focus();
+        this.refs['username'].focus();
       }
     }
 
@@ -101,6 +108,20 @@ export default class Register extends Component {
     let lastNameProps = {
       returnKeyType: 'next',
       onSubmitEditing: () => {
+        this.refs['password'].focus();
+      }
+    }
+
+    let emailProps = {
+      returnKeyType: 'next',
+      onSubmitEditing: () => {
+        this.refs['confirm_email'].focus();
+      }
+    }
+
+    let emailConfirmProps = {
+      returnKeyType: 'next',
+      onSubmitEditing: () => {
         this.refs['room'].focus();
       }
     }
@@ -112,16 +133,99 @@ export default class Register extends Component {
 
 		return (
 			<View>
-				{this.renderInput( 'code', I18n.t('code'), false, codeProps)}
-				{this.renderInput( 'username', I18n.t('username'), false, usernameProps )}
-				{this.renderInput( 'password', I18n.t('password'), true, passwordProps )}
+        <View>
+          <Text style={this.styles.titleHeader}>{I18n.t('register')}</Text>
+        </View>
+        {this.renderInput( 'first_name', I18n.t('first_name'), false, firstNameProps )}
+        {this.renderInput( 'last_name', I18n.t('last_name'), false, lastNameProps )}
+        {this.renderInput( 'password', I18n.t('password'), true, passwordProps )}
         {this.renderInput( 'confirm_password', I18n.t('confirm_password'), true, confirmPasswordProps )}
-				{this.renderInput( 'first_name', I18n.t('first_name'), false, firstNameProps )}
-				{this.renderInput( 'last_name', I18n.t('last_name'), false, lastNameProps )}
+				{this.renderInput( 'username', I18n.t('phone_number'), false, usernameProps )}
+        {this.renderInput( 'email', I18n.t('email'), false, emailProps )}
+        {this.renderInput( 'confirm_email', I18n.t('confirm_email'), false, emailConfirmProps )}
+        {this._renderApartments()}
+        {this._renderBlocks()}
 				{this.renderInput( 'room', I18n.t('room'), false, roomProps )}
 			</View>
 		)
 	}
+
+  _renderApartments() {
+    return this._dropDownRender('apartments', this.state.apartments, this.state.formData.apartment_id);
+  }
+
+  _renderBlocks() {
+    return this._dropDownRender('blocks', this.state.blocks, this.state.formData.block_id);
+  }
+
+  _dropDownRender(ref, data, selectedIndex) {
+    let display = '';
+    if (ref == 'apartments') {
+      display = 'Chung cư';
+      if(this.state.apartments.length > 0) {
+        for(var i = 0; i < this.state.apartments.length; i++) {
+          if(this.state.apartments[i].id == selectedIndex) {
+            display = this.state.apartments[i].name;
+            break;
+          }
+        }
+      }
+    } else if (ref == 'blocks') {
+      display = 'Block';
+      if(this.state.blocks.length > 0) {
+        for(var i = 0; i < this.state.blocks.length; i++) {
+          if(this.state.blocks[i].id == selectedIndex) {
+            display = this.state.blocks[i].name;
+            break;
+          }
+        }
+      }
+    }
+
+    return(
+      <View style={this.styles.dropdownContainer}>
+        <ModalDropdown
+          style={this.styles.modalDropdown}
+          options={data}
+          renderRow={this._dropdownRenderRow.bind(this)}
+          onSelect={(id, value) => this._setDropdownValue(id, value, ref)}
+        >
+          <View style={this.styles.dropdownSubContainer}>
+            <Text style={this.styles.dropdownTextDisplay} >
+              {display}
+            </Text>
+            <Image
+              source={require('../images/downArrow.png')}
+              style={this.styles.dropdownIcon}
+            />
+          </View>
+        </ModalDropdown>
+      </View>
+    );
+  }
+
+  _dropdownRenderRow(rowData, rowID, highlighted) {
+      return (
+        <TouchableHighlight style={{width: 500, height: 50}}>
+          <View style={[this.styles.dropdowRowContainer, highlighted && {backgroundColor: 'lemonchiffon'}]}>
+            <Text style={this.styles.dropdownRowText}>
+              {rowData['name']}
+            </Text>
+          </View>
+        </TouchableHighlight>
+      );
+    }
+
+  _setDropdownValue(id, value, ref) {
+    if(ref == 'apartments') {
+      this.state.formData.apartment_id = this.state.apartments[id]['id'];
+      this.loadBlocks(this.state.formData.apartment_id);
+    } else if(ref == 'blocks') {
+      this.state.formData.block_id = this.state.blocks[id]['id'];
+    }
+
+    this.setState(this.state);
+  }
 
 	renderInput(ref, placeholder, isPassword = false, props = {}) {
   	return (
@@ -154,9 +258,9 @@ export default class Register extends Component {
 				{
 					this.state.isLoading &&
 						<ActivityIndicator
-	         				style= {this.styles.loadingButton}
-	         				size='small'
-	         				color='white' />
+       				style= {this.styles.loadingButton}
+       				size='small'
+       				color='white' />
         }
 	        	<Text style={this.styles.buttonText}>
 	        		{I18n.t('submit')}
@@ -179,7 +283,47 @@ export default class Register extends Component {
   }
 
   componentDidMount() {
-    this.refs['code'].focus();
+    this.refs['first_name'].focus();
+    this.loadApartment();
+  }
+
+  loadBlocks(id) {
+    var url = ApiUrl.ROOT + ApiUrl.LOAD_BLOCK + '/' + id;
+      var context = this;
+      fetch(url)
+        .then(function(response) {
+            if(response.status == 200)  {
+              return response.json();
+            }
+        })
+        .then(function(response) {
+            context.state.blocks = response.items;
+            context.setState(context.state);
+        })
+        .catch(function(error) {
+            console.error(error);
+            Alert.alert(error);
+        });
+  }
+
+  loadApartment() {
+      var url = ApiUrl.ROOT + ApiUrl.LOAD_APARTMENT;
+      var context = this;
+
+      fetch(url)
+        .then(function(response) {
+            if(response.status == 200)  {
+              return response.json();
+            }
+        })
+        .then(function(response) {
+            context.state.apartments = response.items;
+            context.setState(context.state);
+        })
+        .catch(function(error) {
+            console.error(error);
+            Alert.alert(error);
+        });
   }
 
   submitForm()
@@ -317,6 +461,53 @@ export default class Register extends Component {
     },
     loadingButton: {
       marginRight: 10
+    },
+    titleHeader: {
+      fontSize: 30,
+      fontWeight: '400',
+      textAlign : 'center',
+      marginTop: 10
+    },
+    dropdownContainer: {
+      flexDirection: 'row',
+      marginTop: 17,
+      marginBottom: 5,
+      paddingLeft: 5,
+      paddingRight: 5,
+    },
+    modalDropdown: {
+      flex: 1
+    },
+    dropdownSubContainer: {
+      flexDirection: 'row',
+      height: 37,
+      borderRadius: 4,
+      borderWidth: 1,
+      backgroundColor: 'white',
+      justifyContent: 'center',
+      alignItems: 'center',
+    },
+    dropdownTextDisplay: {
+      marginLeft: 5,
+      fontSize: 15,
+      flex: 1,
+      fontFamily: 'Arial',
+    },
+    dropdownIcon: {
+      height:15,
+      width:15,
+      marginRight: 12
+    },
+    dropdowRowContainer: {
+      flex: 1,
+        flexDirection: 'row',
+        height: 38,
+        alignItems: 'center',
+    },
+    dropdownRowText: {
+      fontSize: 14,
+      marginLeft: 5,
+      fontFamily: 'Arial',
     },
 	});
 

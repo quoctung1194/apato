@@ -10,6 +10,9 @@ use App\Http\Controllers\Controller;
 use App\Actions\Api\LoginAction;
 use App\User;
 use App\Apartment;
+use App\Block;
+use App\Floor;
+use App\Room;
 use Illuminate\Support\Facades\Lang;
 use App\Actions\Api\App\Actions\Api;
 
@@ -136,5 +139,41 @@ class LoginController extends Controller {
 				'message' => $message
 			]);
 		}
+	}
+
+	public function getApartments()
+	{
+		$apartments = Apartment::all();
+
+		return response()->json([
+			'items' => $apartments
+		]);
+	}
+
+	public function getBlocks($departmentId)
+	{
+		$blocks = Block::where('apartment_id', $departmentId)->get();
+
+		return response()->json([
+			'items' => $blocks
+		]);
+	}
+
+	public function getFloors($blockId)
+	{
+		$floors = Floor::where('block_id', $blockId)->get();
+
+		return response()->json([
+			'items' => $floors
+		]);
+	}
+
+	public function getRooms($floorId)
+	{
+		$rooms = Room::where('floor_id', $floorId)->get();
+
+		return response()->json([
+			'items' => $rooms
+		]);
 	}
 }
