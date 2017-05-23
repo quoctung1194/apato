@@ -17,6 +17,10 @@ Route::group(['prefix' => 'api',
 	
 	Route::post('/login', 'LoginController@checkAuthentication');
 	Route::post('/register', 'LoginController@register');
+	Route::get('/getApartments', 'LoginController@getApartments');
+	Route::get('/getBlocks/{id?}', 'LoginController@getBlocks');
+	Route::get('/getFloors/{id?}', 'LoginController@getFloors');
+	Route::get('/getRooms/{id?}', 'LoginController@getRooms');
 	
 	Route::group(['middleware' => 'auth:api'], function () {
 		Route::group(['prefix' => 'notification'], function(){

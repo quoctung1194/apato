@@ -73,7 +73,7 @@ class LoginAction {
 		$user->password = \Hash::make($params['password']);
 		$user->username = $params['username'];
 		$user->room_id = $params['room_id'];
-		$user->email = $user->username . '@test.com';
+		$user->email = $params['email'];
 		$user->api_token = str_random(60);
 
 		return $user->save();

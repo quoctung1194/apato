@@ -1,10 +1,14 @@
 export default class ApiUrl {
 
-  static ROOT = 'http://server.apato.me/public/api';
+  static ROOT = 'http://192.168.1.106/api';
   //static ROOT = 'http://192.168.1.102/public/api';
 
   static LOGIN = '/login';
   static REGISTER = '/register';
+  static LOAD_APARTMENT = '/getApartments';
+  static LOAD_BLOCK = '/getBlocks';
+  static LOAD_FLOOR = '/getFloors';
+  static LOAD_ROOM = '/getRooms';
   
   static STICKY_HOME_NOTIFICATIONS = '/notification/stickyHomeNotifications';
   static NOTIFICATION_DETAIL = '/notification/notificationDetail/';
