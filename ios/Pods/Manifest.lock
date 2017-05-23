@@ -1,0 +1,18 @@
+PODS:
+  - OneSignal (1.13.3)
+  - QBImagePickerController (3.4.0)
+  - RSKImageCropper (1.5.2)
+
+DEPENDENCIES:
+  - OneSignal (~> 1.13.3)
+  - QBImagePickerController
+  - RSKImageCropper
+
+SPEC CHECKSUMS:
+  OneSignal: 434facae3389cb0d4d3fc57b9a6cf66db685205e
+  QBImagePickerController: d54cf93db6decf26baf6ed3472f336ef35cae022
+  RSKImageCropper: 27d0e7efa800b509720163c3561fe08a04853780
+
+PODFILE CHECKSUM: e531d4960bb438e04d9b0279f0890c2f3ea824d2
+
+COCOAPODS: 1.1.1
