@@ -100,6 +100,9 @@
                         <li {{ ($menu == 'MAR') ? 'class=active' : '' }}>
                             <a href="{{ route('MAR-001') }}">@lang('main.admin_residential')</a>
                         </li>
+                        <li {{ ($menu == 'MAS') ? 'class=active' : '' }}>
+                            <a href="{{ route('MAS-001') }}">@lang('main.apartment_setting')</a>
+                        </li>
                         <li>
                             <a href="{{ route('ML-002') }}">@lang('main.logout')</a>
                         </li>
