@@ -24,19 +24,21 @@ export default class Register extends Component {
 
   state = {
     formData: {
-      code: '',
       username: '',
       password: '',
       confirm_password: '',
       first_name: '',
       last_name: '',
-      room: '',
+      email: '',
+      room_id: '',
       apartment_id: '',
       block_id: ''
     },
     isLoading: false,
     apartments: [],
     blocks: [],
+    floors: [],
+    rooms: []
   }
 
 	render()
@@ -145,7 +147,8 @@ export default class Register extends Component {
         {this.renderInput( 'confirm_email', I18n.t('confirm_email'), false, emailConfirmProps )}
         {this._renderApartments()}
         {this._renderBlocks()}
-				{this.renderInput( 'room', I18n.t('room'), false, roomProps )}
+        {this._renderFloors()}
+        {this._renderRooms()}
 			</View>
 		)
 	}
@@ -156,6 +159,14 @@ export default class Register extends Component {
 
   _renderBlocks() {
     return this._dropDownRender('blocks', this.state.blocks, this.state.formData.block_id);
+  }
+
+  _renderFloors() {
+    return this._dropDownRender('floors', this.state.floors, this.state.formData.floor_id);
+  }
+
+  _renderRooms() {
+    return this._dropDownRender('rooms', this.state.rooms, this.state.formData.room_id);
   }
 
   _dropDownRender(ref, data, selectedIndex) {
@@ -176,6 +187,26 @@ export default class Register extends Component {
         for(var i = 0; i < this.state.blocks.length; i++) {
           if(this.state.blocks[i].id == selectedIndex) {
             display = this.state.blocks[i].name;
+            break;
+          }
+        }
+      }
+    } else if (ref == 'floors') {
+      display = 'Tầng';
+      if(this.state.floors.length > 0) {
+        for(var i = 0; i < this.state.floors.length; i++) {
+          if(this.state.floors[i].id == selectedIndex) {
+            display = this.state.floors[i].name;
+            break;
+          }
+        }
+      }
+    } else if (ref == 'rooms') {
+      display = 'Phòng';
+      if(this.state.rooms.length > 0) {
+        for(var i = 0; i < this.state.rooms.length; i++) {
+          if(this.state.rooms[i].id == selectedIndex) {
+            display = this.state.rooms[i].name;
             break;
           }
         }
@@ -222,6 +253,12 @@ export default class Register extends Component {
       this.loadBlocks(this.state.formData.apartment_id);
     } else if(ref == 'blocks') {
       this.state.formData.block_id = this.state.blocks[id]['id'];
+      this.loadFloors(this.state.formData.block_id);
+    } else if(ref == 'floors') {
+      this.state.formData.floor_id = this.state.floors[id]['id'];
+      this.loadRooms(this.state.formData.floor_id);
+    } else if(ref == 'rooms') {
+      this.state.formData.room_id = this.state.rooms[id]['id'];
     }
 
     this.setState(this.state);
@@ -287,6 +324,44 @@ export default class Register extends Component {
     this.loadApartment();
   }
 
+  loadRooms(id) {
+    var url = ApiUrl.ROOT + ApiUrl.LOAD_ROOM + '/' + id;
+      var context = this;
+      fetch(url)
+        .then(function(response) {
+            if(response.status == 200)  {
+              return response.json();
+            }
+        })
+        .then(function(response) {
+            context.state.rooms = response.items;
+            context.setState(context.state);
+        })
+        .catch(function(error) {
+            console.error(error);
+            Alert.alert(error);
+        });
+  }
+
+  loadFloors(id) {
+    var url = ApiUrl.ROOT + ApiUrl.LOAD_FLOOR + '/' + id;
+      var context = this;
+      fetch(url)
+        .then(function(response) {
+            if(response.status == 200)  {
+              return response.json();
+            }
+        })
+        .then(function(response) {
+            context.state.floors = response.items;
+            context.setState(context.state);
+        })
+        .catch(function(error) {
+            console.error(error);
+            Alert.alert(error);
+        });
+  }
+
   loadBlocks(id) {
     var url = ApiUrl.ROOT + ApiUrl.LOAD_BLOCK + '/' + id;
       var context = this;
@@ -350,7 +425,7 @@ export default class Register extends Component {
     //Gán dữ liệu vào formData
     for(var key in this.state.formData)
     {
-      let value = this.state.formData[key].trim();
+      let value = this.state.formData[key].toString().trim();
       formData.append(key, value);
     }
 
@@ -392,10 +467,11 @@ export default class Register extends Component {
   {
     let formData = this.state.formData;
 
+
     for(let key in formData)
     {
       let value = formData[key];
-      if(value.trim() == '')
+      if(value.toString().trim() == '')
       {
         alert(I18n.t('emptyFields'));
         return false;

@@ -59,23 +59,6 @@ class LoginController extends Controller {
 		//Lấy tất cả params của người dùng
 		$params = $request->all();
 		
-		//Kiểm tra code có hợp lệ hay chưa
-		$queryBuilder = Apartment::where('register_code', '=', $params['code']);
-		if($queryBuilder->count() == 0)
-		{
-			$status = 'invalid';
-			$message = Lang::get('main.invalid_code');
-			
-			return response()->json([
-				'status' => $status,
-				'message' => $message
-			]);
-		}
-		else
-		{
-			$params['apartment'] = $queryBuilder->get()[0];
-		}
-		
 		//Kiểm tra username có tồn tại hay không
 		$queryBuilder = User::where('username', '=', $params['username']);
 		if($queryBuilder->count() > 0)
@@ -87,33 +70,6 @@ class LoginController extends Controller {
 				'status' => $status,
 				'message' => $message
 			]);
-		}
-		
-		//Kiểm tra phòng với chung cư tương ứng có tồn tai hay không
-		$queryBuilder = DB::table('apartments')
-					->join('blocks', 'blocks.apartment_id', '=', 'apartments.id')
-					->join('floors', 'floors.block_id', '=', 'blocks.id')
-					->join('rooms', 'rooms.floor_id', '=', 'floors.id')
-					
-					->whereNull('apartments.deleted_at')
-					->whereNull('blocks.deleted_at')
-					->whereNull('floors.deleted_at')
-					->whereNull('rooms.deleted_at')
-					->where('rooms.name', 'like', $params['room'])
-					->where('apartments.id', '=', $params['apartment']->id);
-		if($queryBuilder->count() == 0)
-		{
-			$status = 'invalid';
-			$message = Lang::get('main.invalid_room');
-			
-			return response()->json([
-				'status' => $status,
-				'message' => $message
-			]);
-		}
-		else
-		{
-			$params['room_id'] = $queryBuilder->first()->id;
 		}
 		
 		$action = new LoginAction();
