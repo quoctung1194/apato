@@ -13,9 +13,11 @@ class AlterApartmentsTableForApartmentSetting extends Migration
      */
     public function up()
     {
-        $table->string('employer_name', 255);
-        $table->integer('complete_year');
-        $table->integer('ward_id');
+        Schema::table('apartments', function (Blueprint $table) {
+            $table->string('employer_name', 255);
+            $table->integer('complete_year');
+            $table->integer('ward_id');
+        }
     }
 
     /**

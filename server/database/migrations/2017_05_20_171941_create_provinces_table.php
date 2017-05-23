@@ -13,11 +13,13 @@ class CreateProvincesTable extends Migration
      */
     public function up()
     {
-        $table->increments('id');
-        $table->string('name', 100);
-        $table->string('type', 30);
-        $table->timestamps();
-        $table->softDeletes();
+        Schema::create('provinces', function (Blueprint $table) {
+            $table->increments('id');
+            $table->string('name', 100);
+            $table->string('type', 30);
+            $table->timestamps();
+            $table->softDeletes();
+        }
     }
 
     /**

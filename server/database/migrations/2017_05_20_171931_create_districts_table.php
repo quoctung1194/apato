@@ -13,13 +13,15 @@ class CreateDistrictsTable extends Migration
      */
     public function up()
     {
-        $table->increments('id');
-        $table->string('name', 100);
-        $table->string('type', 30);
-        $table->string('location', 30);
-        $table->integer('province_id');
-        $table->timestamps();
-        $table->softDeletes();
+        Schema::create('districts', function (Blueprint $table) {
+            $table->increments('id');
+            $table->string('name', 100);
+            $table->string('type', 30);
+            $table->string('location', 30);
+            $table->integer('province_id');
+            $table->timestamps();
+            $table->softDeletes();
+        }
     }
 
     /**
