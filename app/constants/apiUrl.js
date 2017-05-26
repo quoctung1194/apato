@@ -5,6 +5,10 @@ export default class ApiUrl {
 
   static LOGIN = '/login';
   static REGISTER = '/register';
+  static LOAD_APARTMENT = '/getApartments';
+  static LOAD_BLOCK = '/getBlocks';
+  static LOAD_FLOOR = '/getFloors';
+  static LOAD_ROOM = '/getRooms';
   
   static STICKY_HOME_NOTIFICATIONS = '/notification/stickyHomeNotifications';
   static NOTIFICATION_DETAIL = '/notification/notificationDetail/';
