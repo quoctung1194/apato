@@ -5,6 +5,7 @@ import {lang as vnLang} from './app/i18n/en-VN';
 
 AppRegistry.registerComponent('ApartmentManagement', () => Route);
 
+I18n.locale = 'en-VN';
 I18n.translations = {
   'en-VN': vnLang,
 }
