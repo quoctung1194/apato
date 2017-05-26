@@ -13,13 +13,15 @@ class CreateWardsTable extends Migration
      */
     public function up()
     {
-        $table->increments('id');
-        $table->string('name', 100);
-        $table->string('type', 30);
-        $table->string('location', 30);
-        $table->integer('district_id');
-        $table->timestamps();
-        $table->softDeletes();
+        Schema::create('wards', function (Blueprint $table) {
+            $table->increments('id');
+            $table->string('name', 100);
+            $table->string('type', 30);
+            $table->string('location', 30);
+            $table->integer('district_id');
+            $table->timestamps();
+            $table->softDeletes();
+        }
     }
 
     /**

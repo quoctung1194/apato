@@ -13,7 +13,7 @@ class AlterUsersTableForAdminResidential extends Migration
      */
     public function up()
     {
-        Schema::create('users', function (Blueprint $table) {
+        Schema::table('users', function (Blueprint $table) {
             $table->integer('gender')->default(0);
             $table->string('phone', 50);
             $table->string('id_card', 12);
