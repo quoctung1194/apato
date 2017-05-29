@@ -96,7 +96,7 @@ return [
 	'invalid_register' => 'Đăng kí thất bại',
 
 	// Admin residential
-	'admin_residential' => 'Admin - Dân cư',
+	'admin_residential' => 'Dân cư',
 	'id_card' => 'Số CMND',
 	'magnetic_card_code' => 'Số thẻ từ',
 	'birthday' => 'Ngày sinh',
