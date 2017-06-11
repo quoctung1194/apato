@@ -57,6 +57,10 @@ Route::group(['prefix' => 'api',
 		Route::group(['prefix' => 'serviceCall'], function() {
 			Route::get('/getPermission/{serviceId}', 'ServiceCallController@getPermission');
 		});
+
+		Route::group(['prefix' => 'user'], function() {
+			Route::post('/changePass', 'UserController@changePass');
+		});
 	});
 	
 });
