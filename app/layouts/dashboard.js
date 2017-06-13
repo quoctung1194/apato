@@ -45,7 +45,7 @@ export default class Dashboard extends Component {
             </View>
 
             <View style={this.styles.topContainer}>
-                <TouchableOpacity onPress={()=>this._logout()}>
+                <TouchableOpacity onPress={()=>this.redirectSetting()}>
                     <Image
                       source={require('../images/menuNavigation.png')}
                       style={this.styles.menu}
@@ -72,11 +72,8 @@ export default class Dashboard extends Component {
     );
   }
 
-  _logout() {
-    AsyncStorage.removeItem('userInfo', () => {
-        OneSignal.sendTags({userId: -1, apartmentId: -1});
-        this.props.navigator.resetTo({sceneId: '000'});
-    });
+  redirectSetting() {
+    this.props.navigator.push({sceneId: '009'}) 
   }
 
   styles = StyleSheet.create({

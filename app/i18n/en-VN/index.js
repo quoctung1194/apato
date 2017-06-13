@@ -45,4 +45,12 @@ export const lang =  {
     submit: 'Hoàn Thành',
     emptyFields: 'Vui lòng điền đầy đủ thông tin',
     confirm_password_not_match: 'Mật khẩu xác nhận không trùng',
+    changePass: 'Thay Đổi Password',
+    setting: 'Tùy Chỉnh',
+    logout: 'Đăng xuất',
+    oldPassword: 'Mật khẩu cũ',
+    newPassword: 'Mật khẩu mới',
+    confirmNewPassword: 'Xác nhận mật khẩu mới',
+    oldPassword_notEmpty: 'Password cũ không để trống',
+    newPassword_notEmpty: 'Password mới không để trống'
 }
