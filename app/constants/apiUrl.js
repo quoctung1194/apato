@@ -1,7 +1,7 @@
 export default class ApiUrl {
 
-  static ROOT = 'http://server.apato.me/public/api';
-  //static ROOT = 'http://192.168.1.102/public/api';
+  //static ROOT = 'http://server.apato.me/public/api';
+  static ROOT = 'http://192.168.1.106/api';
 
   static LOGIN = '/login';
   static REGISTER = '/register';
@@ -25,6 +25,9 @@ export default class ApiUrl {
   static SERVICE_DETAIL_LIST = '/service/list/{?}';
   static SERVICE_DETAIL_CLICK = '/serviceClick/click/{?}';
   static SERVICE_DETAIL_CALL_PERMISSION = '/serviceCall/getPermission/{?}';
+
+  // user settings
+  static CHANGE_PASS = '/user/changePass';
 
   static IMAGE = '/../';
 }

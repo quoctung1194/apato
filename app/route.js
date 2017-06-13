@@ -15,6 +15,8 @@ import InitSetting from './layouts/initSetting';
 import ServiceCategory from './layouts/serviceCategory';
 import ServiceDetailList from './layouts/serviceDetailList';
 import Register from './layouts/register';
+import Setting from './layouts/setting';
+import ChangePass from './layouts/changePass';
 
 export default class Route extends Component {
 
@@ -55,6 +57,10 @@ export default class Route extends Component {
         return <ServiceDetailList navigator={navigator} {...route.passProps} />
       case '008':
         return <Register navigator={navigator} {...route.passProps} />
+      case '009':
+        return <Setting navigator={navigator} {...route.passProps} />
+      case '010':
+        return <ChangePass navigator={navigator} {...route.passProps} />
     };
   }
 
