@@ -179,8 +179,11 @@ export default class Login extends Component {
       	})
       	.then(function(response) {
 
-      		if(response.message == -1) {
-      			throw new Error();
+      		if(response.status == false) {
+      			alert(response.message);
+      			context.state.isLoading = false;
+				context.setState(context.state);
+      			return;
       		}
 
       		let userInfo = JSON.stringify(response.message);

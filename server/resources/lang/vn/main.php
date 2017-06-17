@@ -126,6 +126,6 @@ return [
 	'user_unsuccessful' => 'Vui lòng thử lại',
 
 	// Login
-	'invalid_user' => 'User không tồn tại',
+	'invalid_user' => 'Username hoặc password không chính xác',
 	'unable_user' => 'User chưa được kích hoạt',
 ];
