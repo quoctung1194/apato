@@ -21,7 +21,7 @@ class CreateWardsTable extends Migration
             $table->integer('district_id');
             $table->timestamps();
             $table->softDeletes();
-        }
+        });
     }
 
     /**

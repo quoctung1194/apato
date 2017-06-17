@@ -19,7 +19,7 @@ class CreateProvincesTable extends Migration
             $table->string('type', 30);
             $table->timestamps();
             $table->softDeletes();
-        }
+        });
     }
 
     /**

@@ -28,28 +28,35 @@ class LoginController extends Controller {
 				'username' => 'required|Max:255',
 				'password' => 'required|Max:255',
 			]);
-			if($validator->fails()) {
-				return response()->json([
-					'message' => -1
-				]);
-			}
 			
 			//Check Valid User
 			$isValid = $loginAction->checkAuthentication($request->all());
 			
 			if(!$isValid) {
 				return response()->json([
-					'message' => -1
+					'status' => false,
+					'message' => Lang::get('main.invalid_user')
 				]);
 			} else {
+				//checking user is enable or not
+				$user = User::where('username', '=', $request->username)->first();
+				if(!$user->is_enable) {
+					return response()->json([
+						'status' => false,
+						'message' =>  Lang::get('main.unable_user')
+					]);
+				}
+
 				return response()->json([
+					'status' => true,
 					'message' =>  $loginAction->getUserInfo($request->username)
 				]);
 			}
 		} catch(\Exception $ex) {
 			Log::error("App\Http\Controllers\Api\LoginController - checkAuthentication - " . $ex->getMessage());
 			return response()->json([
-				'message' => -1
+				'status' => false,
+				'message' => $ex->getMessage()
 			]);
 		}
 	}

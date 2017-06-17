@@ -75,6 +75,7 @@ class LoginAction {
 		$user->room_id = $params['room_id'];
 		$user->email = $params['email'];
 		$user->api_token = str_random(60);
+		$user->is_enable = false;
 
 		return $user->save();
 	}
