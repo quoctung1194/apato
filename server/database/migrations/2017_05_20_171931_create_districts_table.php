@@ -21,7 +21,7 @@ class CreateDistrictsTable extends Migration
             $table->integer('province_id');
             $table->timestamps();
             $table->softDeletes();
-        }
+        });
     }
 
     /**
