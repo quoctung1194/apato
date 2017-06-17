@@ -4,7 +4,7 @@ export const lang =  {
     login: 'Đăng nhập',
     notHaveAccountQuestion: 'Bạn chưa có tài khoản đăng nhập ?',
     home: 'Home',
-    hotLine: 'GỌI HOTLINE',
+    hotLine: 'HOTLINE',
     sendRequirement: 'GỬI YÊU CẦU',
     service: 'DỊCH VỤ',
     confirm: 'Xác Nhận',
@@ -12,7 +12,7 @@ export const lang =  {
     agree: 'Đồng ý',
     cancel: 'Huỷ',
     notification: 'Thông Báo',
-    tryAgain: 'Vui lòng thu lai',
+    tryAgain: 'Vui lòng thử lại',
     title: 'Tiêu đề',
     addPictures: 'Thêm Hình',
     repeatProblem: 'Sự cố lặp lại',
@@ -29,8 +29,8 @@ export const lang =  {
     selected: 'Bạn đã chọn',
     sendMoreInformation: 'Gửi Thêm Thông Tin',
     completeSurvey: 'HOÀN TẤT KHẢO SÁT',
-    validOptions: 'Vui long chon it nhat mot option',
-    validCharacterCount: '{{input}} phải lớn hơn {{countCharacter}} kí tự',
+    validOptions: 'Vui lòng chọn ít nhất 01 tùy chọn',
+    validCharacterCount: '{{input}} phải lớn hơn {{countCharacter}} ký tự',
     joinSurvey: 'THAM GIA KHẢO SÁT',
     changeSurvey: 'THAY ĐỔI Ý KIẾN',
     register: 'ĐĂNG KÝ TÀI KHOẢN',
@@ -52,5 +52,8 @@ export const lang =  {
     newPassword: 'Mật khẩu mới',
     confirmNewPassword: 'Xác nhận mật khẩu mới',
     oldPassword_notEmpty: 'Password cũ không để trống',
-    newPassword_notEmpty: 'Password mới không để trống'
+    newPassword_notEmpty: 'Password mới không để trống',
+    vietnamese: 'Tiếng Việt',
+    english: 'Tiếng Anh',
+    language: 'Ngôn ngữ'
 }

@@ -2,6 +2,7 @@ import React, {Component} from 'react';
 import {
   Navigator,
   Alert,
+  AsyncStorage,
 } from 'react-native';
 import TimerMixin from 'react-timer-mixin';
 import OneSignal from 'react-native-onesignal';
@@ -17,11 +18,23 @@ import ServiceDetailList from './layouts/serviceDetailList';
 import Register from './layouts/register';
 import Setting from './layouts/setting';
 import ChangePass from './layouts/changePass';
+import I18n from 'react-native-i18n';
 
 export default class Route extends Component {
 
   constructor(props) {
     super(props);
+    this.setLocale();
+  }
+
+  async setLocale()
+  {
+    let localValue = await AsyncStorage.getItem('settings.language');
+    if(localValue == undefined || localValue == null) {
+      I18n.locale = 'en-VN';
+    } else {
+      I18n.locale = localValue;
+    }
   }
 
   render() {

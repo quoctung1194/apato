@@ -12,19 +12,74 @@ import {
 } from 'react-native';
 import NavigationBar from '../components/navigationBar';
 import I18n from 'react-native-i18n';
+import Picker from 'react-native-picker';
 
 export default class Setting extends Component
 {
     constructor()
     {
         super();
+        // init setting
+        this.loadSettings();
+    }
+
+    /**
+     * Load settings
+     */
+    loadSettings()
+    {
         const ds = new ListView.DataSource({rowHasChanged: (r1, r2) => r1 !== r2});
+
         this.state = {
             dataSource: ds.cloneWithRows([
                 {id: 'changePass', value: I18n.t('changePass')},
+                {id: 'language', value: I18n.t('language')},
                 {id: 'logout', value: I18n.t('logout')}
             ]),
         };
+
+        // init picker
+        this.initPicker();
+    }
+
+    async initPicker()
+    {
+        // made data for language
+        let languageData = [
+            I18n.t('vietnamese'),
+            I18n.t('english')
+        ];
+
+        //get default language
+        let localeValue = await AsyncStorage.getItem('settings.language');
+        // get language value for picker
+        let languageValue =  this.getLanguageNameByLocale(localeValue);
+
+        Picker.init({
+            pickerData: languageData,
+            selectedValue: [languageValue],
+            pickerCancelBtnText: I18n.t('cancel'),
+            pickerConfirmBtnText: I18n.t('agree'),
+            pickerTitleText: I18n.t('language'),
+            onPickerConfirm: this.pickerConfirm.bind(this)
+        });
+    }
+
+    /**
+     * picker confirm event
+     */
+    async pickerConfirm(value)
+    {
+        // set value into local storage
+        let localeValue = this.getLocaleValue(value);
+        await AsyncStorage.setItem('settings.language', localeValue);
+
+        // change locale
+        I18n.locale = localeValue;
+
+        // reset settings value
+        this.loadSettings();
+        this.setState(this.state);
     }
 
     render()
@@ -34,6 +89,7 @@ export default class Setting extends Component
                 {this.renderStatusBar()}
                 <NavigationBar title={I18n.t('setting')} navigator={this.props.navigator} />
                 <ListView
+                    ref={'settingList'}
                     dataSource={this.state.dataSource}
                     renderRow={this.renderRow.bind(this)}
                     renderSeparator={this.renderSeperator.bind(this)}
@@ -46,11 +102,12 @@ export default class Setting extends Component
     {
         return (
             <TouchableHighlight
+                style={this.styles.rowContainer}
                 onPress={this.onPress.bind(this, rowData['id'])}
                 underlayColor={'transparent'}>
-                <View style={[this.styles.marginLeft10, this.styles.marginTop10]}>
-                    <Text style={this.styles.row}>{rowData['value']}</Text>
-                </View>
+                    <Text style={[this.styles.row, this.styles.marginLeft10]}>
+                        {rowData['value']}
+                    </Text>
             </TouchableHighlight>
         );
     }
@@ -82,15 +139,42 @@ export default class Setting extends Component
             case 'logout':
                 this.logout();
                 break;
+            case 'language':
+                this.changeLanguage();
+                break;
         }
     }
 
-    logout() {
+    getLocaleValue(selectedValue)
+    {
+        if(selectedValue == I18n.t('vietnamese')) {
+            return 'en-VN';
+        } else {
+            return 'en-US';
+        }
+    }
+
+    getLanguageNameByLocale(localeValue)
+    {
+        if(localeValue == 'en-VN') {
+            return I18n.t('vietnamese');
+        } else {
+            return I18n.t('english');
+        }
+    }
+
+    logout()
+    {
         AsyncStorage.removeItem('userInfo', () => {
             OneSignal.sendTags({userId: -1, apartmentId: -1});
             this.props.navigator.resetTo({sceneId: '000'});
         });
-  }
+    }
+
+    changeLanguage()
+    {
+        Picker.show();
+    }
     
     styles = StyleSheet.create({
         container: {
@@ -104,9 +188,15 @@ export default class Setting extends Component
             height: Platform.OS == 'ios' ? 20 : 0,
             alignSelf: 'stretch',
         },
+        rowContainer: {
+            height: 40,
+            justifyContent: 'center'
+        },
         row: {
-            fontSize: 20,
-            flex: 1
+            fontSize: 17,
+            flex: 1,
+            textAlignVertical: "center",
+            color: 'gray'
         },
         marginLeft10: {
             marginLeft: 10,
