@@ -29,24 +29,30 @@ class NotificationController extends Controller {
 	}
 	
 	function edit(Request $request) {
-		try {
-			
-			$params = [];
-			
-			$notificationAction =  new NotificationAction();
-			$notification = $notificationAction->save($request->all());
-			
-			if($notification == null) {
-				$notification = new Notification();
-			}
-			
-			$params['notification'] = $notification;
-			//return $this->view('edit', $params);
-			return redirect()->route('MM-002');
-			
-		} catch(\Exception $ex) {
-			Log::error("App\Http\Controllers\Management\ NotificationController - edit - " . $ex->getMessage());
+		if(empty($request->id)) { // create new
+			$entity = new Notification();
+		} else { // retrieve
+			$entity = Notification::find($request->id);
 		}
+
+		// fill all value into entity
+		$entity->fill($request->all());
+		if(empty($request->isStickyHome)) {
+			$entity->isStickyHome = false;
+		}
+		if(empty($request->remind)) {
+			$entity->remindDate = null;
+		}
+
+		// assign current apartmentId
+		$admin = auth()->guard('admin')->user();
+		$entity->apartment_id = $admin->apartment->id;
+
+		// save into database
+		$entity->save();
+
+		// redirect to detail page		
+		return redirect()->route('MM-002', ['id' => $entity->id]);
 	}
 	
 	function showList() {
@@ -54,14 +60,14 @@ class NotificationController extends Controller {
 			$admin = auth()->guard('admin')->user();
 			
 			$params = [];
-			$notifications = Notification::where([
-				['apartment_id', '=', $admin->apartment->id],
-				['notificationType', '=', '0']
-			])
-			->whereNull('deleted_at')
-			->orderBy('created_at', 'desc')
-			->get();
-			
+			$notifications = Notification::has('createdBy')
+				->where([
+					['apartment_id', '=', $admin->apartment->id],
+					['notificationType', '=', '0']
+				])
+				->orderBy('created_at', 'desc')
+				->get();
+
 			$params['notifications'] = $notifications;
 			$params['menu'] = 'MN';
 			return $this->view('showList', $params);
@@ -127,6 +133,17 @@ class NotificationController extends Controller {
 	}
 	
 	//Survey Region - END 
+
+	public function remove(Request $request)
+	{
+		
+		$entity = Notification::findOrFail($request->id);
+		$entity->delete();
+		
+		return response()->json([
+			'success' => true,
+		]);
+	}
 
 	private function view($view = null, $data = [], $mergeData = []) {
 		return view(self::PACKAGE . '.' . $view, $data, $mergeData);

@@ -5,6 +5,7 @@ use App\Constants\CommonConstant;
 
 @section('content')
 <link rel="stylesheet" href="{{ URL::asset('resources/fontAwesome/css/font-awesome.css?v=' . CommonConstant::RESOURCE_VERSION) }}">
+<script src="{{ URL::asset('js/management/notification/showList.js?v=' . CommonConstant::RESOURCE_VERSION) }}"></script>
 
 <h1 class="page-header">@lang('main.notification')</h1>
 <div class="row placeholders">
@@ -16,6 +17,9 @@ use App\Constants\CommonConstant;
     <div class="col-xs-6 col-sm-3 placeholder"></div>
 </div>
 <h2 class="sub-header">@lang('main.notification_list')</h2>
+
+<input type="hidden" value="{{ route('MM-007') }}" id="MM-007" />
+
 <div class="table-responsive">
     <table id="notificationTable" class="table table-striped">
         <thead>
@@ -35,7 +39,7 @@ use App\Constants\CommonConstant;
                 <td>{{ $notification->id }}</td>
                 <td>{{ $notification->title }}</td>
                 <td>{{ $notification->created_at->format('d-m-Y') }}</td>
-                <td>Update later</td>
+                <td>{{ $notification->createdBy->username }}</td>
                 <?php
                     if($notification->privacyType == '0') {
                         $privacy = "Chung";
@@ -44,7 +48,7 @@ use App\Constants\CommonConstant;
                     }
                 ?>
                 <td>
-                {{ $privacy }}
+                    {{ $privacy }}
                 </td>
                 <?php
                 if(!empty($notification->remindDate)) {
@@ -57,12 +61,12 @@ use App\Constants\CommonConstant;
                 <td>{{ $remindDate }}</td>
                 <td>
                     <a href="{{ route('MM-002', ['id' => $notification->id]) }}">
-                        <i class="fa fa-pencil" aria-hidden="true" title="Edit"></i>&nbsp;&nbsp;
+                        <i class="fa fa-pencil" aria-hidden="true" title="Edit"></i>
                     </a>
-                    <i class="fa fa-trash" aria-hidden="true" title="Remove"></i>&nbsp;&nbsp;
-                    <img
-                        src="https://cdn2.iconfinder.com/data/icons/25-free-ui-icons/40/trash_bin-16.png"
-                        alt="bin, delete, remove, trash, trash bin, trash can icon">&nbsp;
+                    &nbsp;&nbsp;
+                    <a style="cursor:pointer" onclick="remove('{{ $notification->id }}', this)">
+                        <i class="fa fa-trash" aria-hidden="true" title="Remove"></i>
+                    </a>
                 </td>
             </tr>
         @endforeach

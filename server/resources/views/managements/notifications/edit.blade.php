@@ -1,45 +1,61 @@
+<?php 
+use App\Constants\CommonConstant;
+?>
+
 @extends('managements.master')
 
 @section('content')
 <h1 class="page-header">@lang('main.notification')</h1>
-<script src="{{ URL::asset('resources/ckeditor/ckeditor.js') }}"></script>
-<script src="{{ URL::asset('js/management/notification/edit.js') }}"></script>
+<script src="{{ URL::asset('resources/ckeditor/ckeditor.js?v=' . CommonConstant::RESOURCE_VERSION) }}"></script>
+<script src="{{ URL::asset('js/management/notification/edit.js?v=' . CommonConstant::RESOURCE_VERSION) }}"></script>
 
 <div class="table-responsive">
-    <form method="POST" action="{{ route('MM-003') }}">
-        {{ csrf_field() }}
-        <input type="hidden" name="id" value="{{ $notification->id }}" />
+    {!! Form::model($notification , ['route' => ['MM-003', $notification->id], 'method' => 'post']) !!}
+        {!! Form::hidden('id', null) !!}
         <table class="table"> 
             <tbody> 
                 <tr> 
                     <td style="width: 60%">
                         <label class="control-label">@lang('main.notification_title')</label>
-                        <input type="text" class="form-control" name="title"><br/>
+                        {!! Form::text('title', null, ['class' => 'form-control']) !!}<br/>
                         
                         <label class="control-label">@lang('main.short_description')</label>
-                        <textarea class="form-control" rows="3" rows="33" name="subTitle"></textarea><br/>
+                        {!! Form::textarea('subTitle', null, ['class' => 'form-control', 'rows' => 3]) !!}<br/>
                         
                         <label class="control-label">@lang('main.content')</label>
-                        <textarea class="form-control" rows="3" rows="33" id="content" name="content"></textarea>
-                        <br />
+                        {!! Form::textarea('content', null, ['class' => 'form-control', 'rows' => 3]) !!}<br/>
                         <button type="submit" class="btn btn-default">@lang('main.complete')</button>
                     </td>
                     <td>
                         <label class="control-label"> 
-                            <input type="checkbox" name="sticky"> @lang('main.homepage_sticky')
+                        {!! Form::checkbox('isStickyHome') !!} @lang('main.homepage_sticky')
                         </label>
                         <br>
-                        <label class="control-label"> 
-                            <input type="checkbox" name="remind" id="remind" onClick="turnOnCalender()"> @lang('main.remind')
+
+                        @php
+                            $remindDate = "";
+                            if($notification->remindDate != null) {
+                                $remindDate = \DateTime::createFromFormat('Y-m-d H:i:s', $notification->remindDate)->format('Y-m-d H:i');
+                            }
+                        @endphp
+
+                        <label class="control-label">
+                            @if (empty($remindDate))
+                                <input type="checkbox" name="remind" id="remind" onClick="turnOnCalender()" />
+                            @else
+                                <input checked type="checkbox" name="remind" id="remind" onClick="turnOnCalender()" />
+                            @endif
+                            @lang('main.remind')
                         </label>
+
                         <br>
-                        <input type="text" name="remindCalender" id="remindCalender" disabled/>
+                        {!! Form::text('remindDate', $remindDate, ['id' => 'remindDate', 'disabled']) !!}<br/>
                         <br>
                     </td>
                 </tr>
             </tbody>
         </table>
-    </form>
+    {!! Form::close() !!}
     <br/>
 </div>
 @endsection
