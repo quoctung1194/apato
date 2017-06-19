@@ -83,6 +83,8 @@ use App\Actions\Management\SurveyAction;
 								echo $percent . '% ' . $option->content . "<br/>";
 							}
 						?>
+						<br/>
+						<button type="submit" class="btn btn-default" >@lang('main.complete')</button>
 						<?php } ?>
 					</td>
 					<td>
@@ -98,7 +100,7 @@ use App\Actions\Management\SurveyAction;
 							<input type="checkbox" name="remind" id="remind" onClick="turnOnCalender()"> @lang('main.remind')
 						</label>
 						<br>
-						<input type="text" name="remindCalender" id="remindCalender" disabled/>
+						<input type="text" name="remindCalender" id="remindCalender" placeholder="{{ $notification->remindDate }}" disabled/>
 						<br>
 					</td>
 				</tr>

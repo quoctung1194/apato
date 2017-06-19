@@ -17,7 +17,7 @@ class AlterApartmentsTableForApartmentSetting extends Migration
             $table->string('employer_name', 255);
             $table->integer('complete_year');
             $table->integer('ward_id');
-        }
+        });
     }
 
     /**
