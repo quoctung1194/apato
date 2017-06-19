@@ -90,6 +90,9 @@ Route::group(['prefix' => 'management',
 		Route::get('/showSurveyList', 'NotificationController@showSurveyList')->name("MM-004");
 		Route::get('/showSurvey/{id?}', 'NotificationController@showSurvey')->name("MM-005");
 		Route::post('/editSurvey', 'NotificationController@editSurvey')->name("MM-006");
+		Route::get('/list/json', 'NotificationController@getJsonSurveyList')->name('MM-007');
+		Route::post('/remove', 'NotificationController@removeSurvey')->name('MM-008');
+		Route::post('/lock', 'NotificationController@lockSurvey')->name('MM-009');
 	});
 	
 	Route::group(['prefix' => 'requirement'], function(){
