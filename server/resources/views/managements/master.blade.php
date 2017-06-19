@@ -82,6 +82,9 @@
                         <li {{ ($menu == 'MR') ? 'class=active' : '' }}>
                             <a href="{{ route('MR-001') }}">@lang('main.requirement')</a>
                         </li>
+                        <li {{ ($menu == 'MAR') ? 'class=active' : '' }}>
+                            <a href="{{ route('MAR-001') }}">@lang('main.admin_residential')</a>
+                        </li>
                         @endIf
                         @if($admin->is_super_admin == 1)
                          <li {{ ($menu == 'MSET') ? 'class=active' : '' }}>
@@ -96,9 +99,6 @@
                         @endIf
                         <li {{ ($menu == 'MA') ? 'class=active' : '' }}>
                             <a href="{{ route('MA-001') }}">@lang('main.admin_management')</a>
-                        </li>
-                        <li {{ ($menu == 'MAR') ? 'class=active' : '' }}>
-                            <a href="{{ route('MAR-001') }}">@lang('main.admin_residential')</a>
                         </li>
                         <li {{ ($menu == 'MAS') ? 'class=active' : '' }}>
                             <a href="{{ route('MAS-001') }}">@lang('main.apartment_setting')</a>
