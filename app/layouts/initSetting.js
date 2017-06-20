@@ -102,7 +102,13 @@ export default class InitSetting extends Component {
 		if(Platform.OS == 'ios') {
   			OneSignal.enableInAppAlertNotification(false);
 		}
-		OneSignal.sendTags({userId: userInfo.userId, apartmentId: userInfo.apartmentId});
+		OneSignal.sendTags({
+            userId: userInfo.userId,
+            apartmentId: userInfo.apartmentId,
+            blockId: userInfo.blockId,
+            floorId: userInfo.floorId,
+            roomId: userInfo.roomId,
+        });
 
 		this._navigating();
   	}

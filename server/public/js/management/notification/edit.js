@@ -1,14 +1,15 @@
 $( document ).ready(function() {
-	$('#remindCalender').datetimepicker();
+	$('#remindDate').datetimepicker();
 	description_editor = CKEDITOR.replace('content');
+	turnOnCalender();
 });
 
 function turnOnCalender() {
 	if(document.getElementById('remind').checked) {
-		document.getElementById('remindCalender').disabled = false;
+		document.getElementById('remindDate').disabled = false;
 	} else {
-		document.getElementById('remindCalender').disabled = true;
-		document.getElementById('remindCalender').value="";
+		document.getElementById('remindDate').disabled = true;
+		document.getElementById('remindDate').value = "";
 	}
 }
 

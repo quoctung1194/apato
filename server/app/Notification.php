@@ -2,6 +2,7 @@
 namespace App;
 
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\SoftDeletes;
 
 class Notification extends Model {
 	const PRIVACY_PUBLIC = 0;
@@ -12,13 +13,27 @@ class Notification extends Model {
 	
 	const CHECK_SINGLE = 1;
 	const CHECK_MULTIPLE = 0;
+
+	use SoftDeletes;
 	
-	protected $fillable = array
-	(
-		'id',
-	);
-	
-	public function surveyOptions() {
+	protected $fillable = [
+		'title',
+		'subTitle',
+		'content',
+		'isStickyHome',
+		'remindDate'
+	];
+
+	public function surveyOptions()
+	{
 		return $this->hasMany('App\SurveyOption');
+	}
+
+	/**
+	 * 
+	 */
+	public function createdBy()
+	{
+		return $this->belongsTo('App\Admin', 'created_by', 'id');
 	}
 }

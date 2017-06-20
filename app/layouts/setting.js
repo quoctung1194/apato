@@ -166,7 +166,12 @@ export default class Setting extends Component
     logout()
     {
         AsyncStorage.removeItem('userInfo', () => {
-            OneSignal.sendTags({userId: -1, apartmentId: -1});
+            OneSignal.deleteTag('userId');
+            OneSignal.deleteTag('apartmentId');
+            OneSignal.deleteTag('blockId');
+            OneSignal.deleteTag('floorId');
+            OneSignal.deleteTag('roomId');
+            
             this.props.navigator.resetTo({sceneId: '000'});
         });
     }

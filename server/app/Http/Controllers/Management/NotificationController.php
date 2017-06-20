@@ -9,6 +9,7 @@ use App\Notification;
 use App\Actions\Management\NotificationAction;
 use App\Actions\Management\SurveyAction;
 use App\Actions\Management\App\Actions\Management;
+use App\Helpers\OnesignalApi;
 
 class NotificationController extends Controller {
 	
@@ -25,28 +26,81 @@ class NotificationController extends Controller {
 		
 		$params['notification'] = $notification;
 		$params['menu'] = 'MN';
+
+		// display list block of current manager
+		$admin = auth()->guard('admin')->user();
+		$blocks = $admin->apartment->blocks;
+		$params['blocks'] = [];
+		// convert into key-value array for render combobox
+		$params['blocks'][''] = '';
+		foreach ($blocks as $item) {
+			$params['blocks'][$item->id] = $item->name;
+		}
+
 		return $this->view('edit', $params);
 	}
 	
 	function edit(Request $request) {
-		try {
-			
-			$params = [];
-			
-			$notificationAction =  new NotificationAction();
-			$notification = $notificationAction->save($request->all());
-			
-			if($notification == null) {
-				$notification = new Notification();
-			}
-			
-			$params['notification'] = $notification;
-			//return $this->view('edit', $params);
-			return redirect()->route('MM-002');
-			
-		} catch(\Exception $ex) {
-			Log::error("App\Http\Controllers\Management\ NotificationController - edit - " . $ex->getMessage());
+		if(empty($request->id)) { // create new
+			$entity = new Notification();
+		} else { // retrieve
+			$entity = Notification::find($request->id);
 		}
+
+		// fill all value into entity
+		$entity->fill($request->all());
+		if(empty($request->isStickyHome)) {
+			$entity->isStickyHome = false;
+		}
+		if(empty($request->remind)) {
+			$entity->remindDate = null;
+		}
+
+		// assign current apartmentId
+		$admin = auth()->guard('admin')->user();
+		$entity->apartment_id = $admin->apartment->id;
+		// assign blockId
+		if(!empty($request->block_id)) {
+			$entity->block_id = $request->block_id;
+		} else {
+			$entity->block_id = null;
+		}
+
+		// save into database
+		$entity->save();
+		// send notifications
+		$params = [
+			'title' => $entity->title,
+			'subTitle' => $entity->subTitle,
+			'remindDate' => $entity->remindDate,
+			'id' => $entity->id
+		];
+
+		// process send block or apartment
+		if(!empty($entity->block_id)) { // sending block
+			$filters = [
+				[
+					"field" => "tag",
+					"key" => "blockId",
+					"relation" => "=",
+					"value" => $entity->block_id
+				]
+			];
+		} else { // sending apartment
+			$filters = [
+				[
+					"field" => "tag",
+					"key" => "apartmentId",
+					"relation" => "=",
+					"value" => $entity->apartment_id
+				]
+			];
+		}
+
+		OnesignalApi::send($params, $filters);
+
+		// redirect to detail page		
+		return redirect()->route('MM-002', ['id' => $entity->id]);
 	}
 	
 	function showList() {
@@ -54,14 +108,14 @@ class NotificationController extends Controller {
 			$admin = auth()->guard('admin')->user();
 			
 			$params = [];
-			$notifications = Notification::where([
-				['apartment_id', '=', $admin->apartment->id],
-				['notificationType', '=', '0']
-			])
-			->whereNull('deleted_at')
-			->orderBy('created_at', 'desc')
-			->get();
-			
+			$notifications = Notification::has('createdBy')
+				->where([
+					['apartment_id', '=', $admin->apartment->id],
+					['notificationType', '=', '0']
+				])
+				->orderBy('created_at', 'desc')
+				->get();
+
 			$params['notifications'] = $notifications;
 			$params['menu'] = 'MN';
 			return $this->view('showList', $params);
@@ -127,6 +181,17 @@ class NotificationController extends Controller {
 	}
 	
 	//Survey Region - END 
+
+	public function remove(Request $request)
+	{
+		
+		$entity = Notification::findOrFail($request->id);
+		$entity->delete();
+		
+		return response()->json([
+			'success' => true,
+		]);
+	}
 
 	private function view($view = null, $data = [], $mergeData = []) {
 		return view(self::PACKAGE . '.' . $view, $data, $mergeData);
