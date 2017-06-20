@@ -14,14 +14,14 @@
 //API
 Route::group(['prefix' => 'api',
 		'namespace' => 'Api'], function () {
-	
+
 	Route::post('/login', 'LoginController@checkAuthentication');
 	Route::post('/register', 'LoginController@register');
 	Route::get('/getApartments', 'LoginController@getApartments');
 	Route::get('/getBlocks/{id?}', 'LoginController@getBlocks');
 	Route::get('/getFloors/{id?}', 'LoginController@getFloors');
 	Route::get('/getRooms/{id?}', 'LoginController@getRooms');
-	
+
 	Route::group(['middleware' => 'auth:api'], function () {
 		Route::group(['prefix' => 'notification'], function(){
 			Route::get('/stickyHomeNotifications', 'NotificationController@getStickyHomeNotification');
@@ -32,28 +32,28 @@ Route::group(['prefix' => 'api',
 			Route::get('/survey/getCompletedSurveyData/{id}', 'NotificationController@getCompletedSurveyData');
 			Route::get('/survey/content/{id}', 'NotificationController@displaySurveyContent');
 		});
-		
+
 		Route::group(['prefix' => 'setting'], function() {
 			Route::get('/{id}', 'SettingController@getSettings');
 		});
-		
+
 		Route::group(['prefix' => 'requirement'], function() {
 			Route::post('/save', 'RequirementController@save');
 		});
-		
+
 		Route::group(['prefix' => 'service'], function() {
 			Route::get('/types', 'ServiceController@getTypes');
 			Route::get('/list/{serviceType?}', 'ServiceController@getList');
 		});
-		
+
 		Route::group(['prefix' => 'serviceClick'], function() {
 			Route::get('/click/{serviceId}', 'ServiceClickController@click');
 		});
-		
+
 		Route::group(['prefix' => 'serviceReCall'], function() {
 			Route::get('/recall', 'ServiceReCallController@recall');
 		});
-		
+
 		Route::group(['prefix' => 'serviceCall'], function() {
 			Route::get('/getPermission/{serviceId}', 'ServiceCallController@getPermission');
 		});
@@ -62,7 +62,7 @@ Route::group(['prefix' => 'api',
 			Route::post('/changePass', 'UserController@changePass');
 		});
 	});
-	
+
 });
 
 
@@ -81,24 +81,28 @@ Route::group(['prefix' => 'management',
 Route::group(['prefix' => 'management',
 			'namespace' => 'Management',
 			'middleware' => ['admin']], function() {
-	
+
 	Route::group(['prefix' => 'notification'], function(){
 		Route::get('/showList', 'NotificationController@showList')->name("MM-001");
 		Route::get('/show/{id?}', 'NotificationController@show')->name("MM-002");
 		Route::post('/edit', 'NotificationController@edit')->name("MM-003");
-		
+
 		Route::get('/showSurveyList', 'NotificationController@showSurveyList')->name("MM-004");
 		Route::get('/showSurvey/{id?}', 'NotificationController@showSurvey')->name("MM-005");
 		Route::post('/editSurvey', 'NotificationController@editSurvey')->name("MM-006");
 
 		Route::post('/remove', 'NotificationController@remove')->name("MM-007");
 	});
-	
+
 	Route::group(['prefix' => 'requirement'], function(){
 		Route::get('/showList', 'RequirementController@showList')->name("MR-001");
-		Route::get('/show/{id}', 'RequirementController@show')->name("MR-002");
+		Route::get('/edit/{id?}', 'RequirementController@edit')->name("MR-002");
+		Route::post('/edit/save', 'RequirementController@save')->name('MR-003');
+		Route::get('/list/json', 'RequirementController@getJsonList')->name('MR-004');
+		Route::post('/remove', 'RequirementController@remove')->name('MR-005');
+		Route::post('/lock', 'RequirementController@lock')->name('MR-006');
 	});
-	
+
 	Route::group(['prefix' => 'adminManagement'], function(){
 		Route::get('/edit/{id?}', 'AdminManagementController@edit')->name('MA-001');
 		Route::post('/edit/save', 'AdminManagementController@save')->name('MA-002');
@@ -107,7 +111,7 @@ Route::group(['prefix' => 'management',
 		Route::get('/editPassword2', 'AdminManagementController@editPassword2')->name('MA-005');
 		Route::put('/editPassword2', 'AdminManagementController@updatePassword2')->name('MA-006');
 	});
-	
+
 	Route::group(['prefix' => 'service'], function(){
 		Route::get('/showList', 'ServiceController@showList')->name('MSE-001');
 		Route::get('/list/json', 'ServiceController@getJsonList')->name('MSE-002');
@@ -117,7 +121,7 @@ Route::group(['prefix' => 'management',
 		Route::get('/clickList/json', 'ServiceController@getClickJsonList')->name('MSE-006');
 		Route::post('/save', 'ServiceController@save')->name('MSE-007');
 	});
-	
+
 	Route::group(['prefix' => 'serviceType'], function(){
 		Route::get('/showList', 'ServiceTypeController@showList')->name('MSET-001');
 		Route::get('/list/json', 'ServiceTypeController@getJsonList')->name('MSET-002');
@@ -126,7 +130,7 @@ Route::group(['prefix' => 'management',
 		Route::post('/lock', 'ServiceTypeController@lock')->name('MSET-005');
 		Route::post('/save', 'ServiceTypeController@save')->name('MSET-006');
 	});
-	
+
 	Route::group(['prefix' => 'provider'], function(){
 		Route::get('/showList', 'ProviderController@showList')->name('MSEP-001');
 		Route::get('/list/json', 'ProviderController@getJsonList')->name('MSEP-002');
@@ -135,7 +139,7 @@ Route::group(['prefix' => 'management',
 		Route::post('/lock', 'ProviderController@lock')->name('MSEP-005');
 		Route::post('/save', 'ProviderController@save')->name('MSEP-006');
 	});
-	
+
 	Route::group(['prefix' => 'providerServiceType'], function(){
 		Route::get('/list/json/{serviceTypeId?}', 'ProviderServiceTypeController@getJsonList')->name('MPST-001');
 	});
