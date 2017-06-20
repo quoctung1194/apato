@@ -47,7 +47,8 @@ return [
 	
 	'opinion_survey' => 'Khảo sát ý kiến',
 	'survey_list' => 'Danh sách khảo sát',
-	
+	'notification send_block' => 'Phát riêng block',
+
 	//Provider
 	'provider' => 'Nhà cung cấp',
 	'provider_name' => 'Tên nhà cung cấp',

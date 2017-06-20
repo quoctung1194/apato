@@ -9,6 +9,7 @@ use App\Notification;
 use App\Actions\Management\NotificationAction;
 use App\Actions\Management\SurveyAction;
 use App\Actions\Management\App\Actions\Management;
+use App\Helpers\OnesignalApi;
 
 class NotificationController extends Controller {
 	
@@ -25,6 +26,17 @@ class NotificationController extends Controller {
 		
 		$params['notification'] = $notification;
 		$params['menu'] = 'MN';
+
+		// display list block of current manager
+		$admin = auth()->guard('admin')->user();
+		$blocks = $admin->apartment->blocks;
+		$params['blocks'] = [];
+		// convert into key-value array for render combobox
+		$params['blocks'][''] = '';
+		foreach ($blocks as $item) {
+			$params['blocks'][$item->id] = $item->name;
+		}
+
 		return $this->view('edit', $params);
 	}
 	
@@ -47,9 +59,45 @@ class NotificationController extends Controller {
 		// assign current apartmentId
 		$admin = auth()->guard('admin')->user();
 		$entity->apartment_id = $admin->apartment->id;
+		// assign blockId
+		if(!empty($request->block_id)) {
+			$entity->block_id = $request->block_id;
+		} else {
+			$entity->block_id = null;
+		}
 
 		// save into database
 		$entity->save();
+		// send notifications
+		$params = [
+			'title' => $entity->title,
+			'subTitle' => $entity->subTitle,
+			'remindDate' => $entity->remindDate,
+			'id' => $entity->id
+		];
+
+		// process send block or apartment
+		if(!empty($entity->block_id)) { // sending block
+			$filters = [
+				[
+					"field" => "tag",
+					"key" => "blockId",
+					"relation" => "=",
+					"value" => $entity->block_id
+				]
+			];
+		} else { // sending apartment
+			$filters = [
+				[
+					"field" => "tag",
+					"key" => "apartmentId",
+					"relation" => "=",
+					"value" => $entity->apartment_id
+				]
+			];
+		}
+
+		OnesignalApi::send($params, $filters);
 
 		// redirect to detail page		
 		return redirect()->route('MM-002', ['id' => $entity->id]);

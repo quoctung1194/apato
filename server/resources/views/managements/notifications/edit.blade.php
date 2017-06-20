@@ -26,7 +26,7 @@ use App\Constants\CommonConstant;
                         {!! Form::textarea('content', null, ['class' => 'form-control', 'rows' => 3]) !!}<br/>
                         <button type="submit" class="btn btn-default">@lang('main.complete')</button>
                     </td>
-                    <td>
+                    <td style="padding-left: 50px">
                         <label class="control-label"> 
                         {!! Form::checkbox('isStickyHome') !!} @lang('main.homepage_sticky')
                         </label>
@@ -47,10 +47,17 @@ use App\Constants\CommonConstant;
                             @endif
                             @lang('main.remind')
                         </label>
+                        <br />
+                        {!! Form::text('remindDate', $remindDate, [
+                            'id' => 'remindDate',
+                            'disabled',
+                            'class' => 'form-control']) !!}
+                        <br />
 
-                        <br>
-                        {!! Form::text('remindDate', $remindDate, ['id' => 'remindDate', 'disabled']) !!}<br/>
-                        <br>
+                        <label class="control-label">
+                            @lang('main.notification send_block')
+                        </label>
+                        {!! Form::select('block_id', $blocks, null, ['class' => 'form-control']) !!}
                     </td>
                 </tr>
             </tbody>

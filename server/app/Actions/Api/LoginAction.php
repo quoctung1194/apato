@@ -41,7 +41,10 @@ class LoginAction {
 							'users.username as username',
 							'users.api_token as apiToken',
 							'apartments.id as apartmentId',
-							'apartments.name as apartmentName'
+							'apartments.name as apartmentName',
+							'blocks.id as blockId',
+							'floors.id as floorId',
+							'rooms.id as roomId'
 						)
 						->join('rooms', 'rooms.id', '=', 'users.room_id')
 						->join('floors', 'floors.id', '=', 'rooms.floor_id')

@@ -20,7 +20,7 @@ class NotificationObserver
     }
 
     /**
-     * Listen to the User updating event.
+     * Listen to the User upd9ating event.
      *
      * @param  Notification  $notification
      * @return void
