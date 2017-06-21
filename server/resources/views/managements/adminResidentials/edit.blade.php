@@ -198,7 +198,15 @@ use App\Constants\CommonConstant;
                 <tr>
                     <td>
                         <label class="control-label" >
-                            <input type="checkbox" name="locked" {{ $user->locked != 0 ? 'checked' : '' }}/>
+                            <input type="checkbox" name="is_enable" {{ $user->is_enable != 0 ? 'checked' : '' }} />
+                            @lang('main.enable')
+                        </label>
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        <label class="control-label" >
+                            <input type="checkbox" name="locked" {{ $user->locked != 0 ? 'checked' : '' }} />
                             @lang('main.lock')
                         </label>
                     </td>

@@ -86,6 +86,7 @@ class AdminResidentialAction {
                             'users.start_at',
                             'users.note',
                             'users.locked',
+                            'users.is_enable',
                             'apartments.id as apartment_id',
                             'blocks.id as block_id',
                             'blocks.name as block_name',
@@ -224,6 +225,12 @@ class AdminResidentialAction {
                 $user->locked = 1;
             } else {
                 $user->locked = 0;
+            }
+
+            if(!empty($params['is_enable'])) {
+                $user->is_enable = 1;
+            } else {
+                $user->is_enable = 0;
             }
             
             $user->save();

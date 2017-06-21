@@ -4,7 +4,6 @@ use App\Constants\CommonConstant;
 @extends('managements.master')
 
 @section('content')
-<link rel="stylesheet" href="{{ URL::asset('resources/fontAwesome/css/font-awesome.css?v=' . CommonConstant::RESOURCE_VERSION) }}">
 <script src="{{ URL::asset('js/management/notification/showList.js?v=' . CommonConstant::RESOURCE_VERSION) }}"></script>
 
 <h1 class="page-header">@lang('main.notification')</h1>

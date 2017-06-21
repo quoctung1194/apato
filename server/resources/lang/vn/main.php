@@ -125,6 +125,7 @@ return [
 	'user_notMatchOldPassword' => 'Password cũ không chính xác',
 	'user_changePassSuccessful' => 'Thay đổi password thành công',
 	'user_unsuccessful' => 'Vui lòng thử lại',
+	'enable' => 'Kích hoạt',
 
 	// Login
 	'invalid_user' => 'Username hoặc password không chính xác',

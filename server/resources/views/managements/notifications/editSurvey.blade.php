@@ -14,21 +14,23 @@ use App\Actions\Management\SurveyAction;
 
 <div class="table-responsive">
 	<form method="POST" action="{{ route('MM-006') }}" id="Optionsform">
-		{{ csrf_field() }}
-		<input type="hidden" name="id" value="{{ $notification->id }}" />
+	{!! Form::model($notification , [
+		'route' => ['MM-006', $notification->id],
+		'method' => 'post',
+		'id' => 'Optionsform']) !!}
+		{!! Form::hidden('id', null) !!}
 		<table class="table"> 
 			<tbody> 
 				<tr> 
 					<td style="width: 60%">
 						<label class="control-label">@lang('main.survey_title')</label>
-						<input type="text" class="form-control"
-							name="title" value="{{ $notification->title }}"><br/>
+						 {!! Form::text('title', null, ['class' => 'form-control']) !!}<br/>
 						
 						<label class="control-label">@lang('main.short_description')</label>
-						<textarea class="form-control" rows="3" rows="33" name="subTitle">{{ $notification->subTitle }}</textarea><br/>
+						{!! Form::textarea('subTitle', null, ['class' => 'form-control', 'rows' => 3]) !!}<br/>
 						
 						<label class="control-label">@lang('main.content')</label>
-						<textarea class="form-control" rows="3" rows="33" id="content" name="content">{{ $notification->content }}</textarea>
+						{!! Form::textarea('content', null, ['class' => 'form-control', 'rows' => 3]) !!}<br/>
 						<br />
 						
 						<?php if(!$notification->id) { ?>
@@ -85,26 +87,43 @@ use App\Actions\Management\SurveyAction;
 						?>
 						<?php } ?>
 					</td>
-					<td>
-						<label class="control-label">
-							<input type="checkbox" name="sticky" <?php 
-								if($notification->isStickyHome) {
-									echo 'checked';
-								}
-							?>>	@lang('main.homepage_sticky')
-						</label>
-						<br>
+					<td style="padding-left: 50px">
 						<label class="control-label"> 
-							<input type="checkbox" name="remind" id="remind" onClick="turnOnCalender()"> @lang('main.remind')
-						</label>
+                        {!! Form::checkbox('isStickyHome') !!} @lang('main.homepage_sticky')
+                        </label>
 						<br>
-						<input type="text" name="remindCalender" id="remindCalender" disabled/>
-						<br>
+
+						@php
+                            $remindDate = "";
+                            if($notification->remindDate != null) {
+                                $remindDate = \DateTime::createFromFormat('Y-m-d H:i:s', $notification->remindDate)->format('Y-m-d H:i');
+                            }
+                        @endphp
+                        
+						<label class="control-label">
+                            @if (empty($remindDate))
+                                <input type="checkbox" name="remind" id="remind" onClick="turnOnCalender()" />
+                            @else
+                                <input checked type="checkbox" name="remind" id="remind" onClick="turnOnCalender()" />
+                            @endif
+                            @lang('main.remind')
+                        </label>
+                        <br />
+                        {!! Form::text('remindDate', $remindDate, [
+                            'id' => 'remindDate',
+                            'disabled',
+                            'class' => 'form-control']) !!}
+                        <br />
+
+                        <label class="control-label">
+                            @lang('main.notification send_block')
+                        </label>
+                        {!! Form::select('block_id', $blocks, null, ['class' => 'form-control']) !!}
 					</td>
 				</tr>
 			</tbody>
 		</table>
-	</form>
+	{!! Form::close() !!}
 	<br/>
 </div>
 @endsection
