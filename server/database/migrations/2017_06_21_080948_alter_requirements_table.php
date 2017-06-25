@@ -25,6 +25,8 @@ class AlterRequirementsTable extends Migration
      */
     public function down()
     {
-        //
+        Schema::table('requirements', function (Blueprint $table) {
+            $table->dropColumn('locked');
+        });
     }
 }
