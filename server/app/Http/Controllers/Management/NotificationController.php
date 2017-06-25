@@ -11,6 +11,8 @@ use App\Actions\Management\SurveyAction;
 use App\Actions\Management\App\Actions\Management;
 use App\Helpers\OnesignalApi;
 use App\SurveyOption;
+use App\User;
+use App\UserNotification;
 
 class NotificationController extends Controller {
 	
@@ -69,6 +71,25 @@ class NotificationController extends Controller {
 
 		// save into database
 		$entity->save();
+
+		//save private notifications
+		$entity->receivers()->delete();
+
+		$receivers = [];
+		$userIds = explode(',', $request->privateUserList);
+		foreach($userIds as $id) {
+			if($id == "") {
+				continue;
+			}
+
+			$userNotification = new UserNotification();
+			$userNotification->user_id = $id;
+
+			$receivers[] = $userNotification;
+		}
+
+		$entity->receivers()->saveMany($receivers);
+
 		// send notifications
 		$params = [
 			'title' => $entity->title,
@@ -173,25 +194,8 @@ class NotificationController extends Controller {
 		return $this->view('editSurvey', $params);
 	}
 	
-	function editSurvey(Request $request) {
-		// try {
-				
-		// 	$params = [];
-				
-		// 	$surveyAction =  new SurveyAction();
-		// 	$notification = $surveyAction->save($request->all());
-				
-		// 	if($notification == null) {
-		// 		$notification = new Notification();
-		// 	}
-				
-		// 	$params['notification'] = $notification;
-		// 	//return $this->view('edit', $params);
-		// 	return redirect()->route('MM-004');
-				
-		// } catch(\Exception $ex) {
-		// 	Log::error("App\Http\Controllers\Management\ NotificationController - edit - " . $ex->getMessage());
-		// }
+	function editSurvey(Request $request)
+	{
 		if(empty($request->id)) { // create new
 			$entity = new Notification();
 		} else { // retrieve
@@ -218,21 +222,47 @@ class NotificationController extends Controller {
 			$entity->block_id = null;
 		}
 
+		// checking is create or update
+		$isCreate = true;
+		if(!empty($entity->id)) {
+			$isCreate = false;
+		}
+
 		// save into database
 		$entity->save();
 
-		//Create Option
-		$options = json_decode($request->options);
-		$entity->surveyOptions()->delete();
+		//save private notifications
+		$entity->receivers()->delete();
 
-		foreach($options as $option) {
-			$surOption = new SurveyOption();
-			$surOption->notification_id = $entity->id;
-			$surOption->content = $option->content;
-			$surOption->is_other = $option->isOther;
-			
-			$surOption->color = $this->rand_color();
-			$surOption->save();
+		$receivers = [];
+		$userIds = explode(',', $request->privateUserList);
+		foreach($userIds as $id) {
+			if($id == "") {
+				continue;
+			}
+
+			$userNotification = new UserNotification();
+			$userNotification->user_id = $id;
+
+			$receivers[] = $userNotification;
+		}
+
+		$entity->receivers()->saveMany($receivers);
+		
+		if($isCreate) {
+			//Create Option
+			$options = json_decode($request->options);
+			$entity->surveyOptions()->delete();
+
+			foreach($options as $option) {
+				$surOption = new SurveyOption();
+				$surOption->notification_id = $entity->id;
+				$surOption->content = $option->content;
+				$surOption->is_other = $option->isOther;
+				
+				$surOption->color = $this->rand_color();
+				$surOption->save();
+			}
 		}
 
 		// send notifications
@@ -264,10 +294,34 @@ class NotificationController extends Controller {
 			];
 		}
 
-		//OnesignalApi::send($params, $filters);
+		OnesignalApi::send($params, $filters);
 
 		// redirect to detail page		
 		return redirect()->route('MM-004', ['id' => $entity->id]);
+	}
+
+	/**
+	 * Show user list
+	 */
+	public function showUsers()
+	{
+		//init view params
+		$params = [];
+
+		// get users list of department admin
+		$users = User::whereHas('room.floor.block.apartment', function($query) {
+			// get admin
+			$admin = auth()->guard('admin')->user();
+			$query->where('apartments.id', $admin->apartment->id);
+		})
+		->whereNull('deleted_at')
+		->orderBy('username', 'asc')
+		->paginate(8);
+
+		$params['users'] = $users;
+			
+		// redirect to detail page		
+		return $this->view('showUsers', $params);
 	}
 	
 	private function rand_color()

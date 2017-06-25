@@ -4,6 +4,8 @@ return [
 	'complete' => 'Hoàn tất',
 	'add_new' => 'TẠO MỚI',
 	'logout' => 'Đăng xuất',
+	'adding' => 'Thêm',
+	'remove' => 'Xóa',
 
 	//Admin management
 	'admin_management' => 'Admin Controller',
@@ -48,6 +50,7 @@ return [
 	'opinion_survey' => 'Khảo sát ý kiến',
 	'survey_list' => 'Danh sách khảo sát',
 	'notification send_block' => 'Phát riêng block',
+	'notification send_user' => 'Phát riêng user',
 
 	//Provider
 	'provider' => 'Nhà cung cấp',

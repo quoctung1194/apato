@@ -1,17 +1,36 @@
 <?php 
 use App\Constants\CommonConstant;
 ?>
-
 @extends('managements.master')
 
 @section('content')
+<style>
+    .tag {
+        background-color: #666666;
+        padding: 6 10 6 10;
+        border-radius: 5px;
+        color: white;
+        font-size: 14px;
+        margin-bottom: 10;
+        margin-right: 5;
+    }
+</style>
+
 <h1 class="page-header">@lang('main.notification')</h1>
 <script src="{{ URL::asset('resources/ckeditor/ckeditor.js?v=' . CommonConstant::RESOURCE_VERSION) }}"></script>
 <script src="{{ URL::asset('js/management/notification/edit.js?v=' . CommonConstant::RESOURCE_VERSION) }}"></script>
 
+<!-- hidden field -->
+<input type="hidden" id="MM-008" value="{{ route('MM-008') }}" />
+
 <div class="table-responsive">
-    {!! Form::model($notification , ['route' => ['MM-003', $notification->id], 'method' => 'post']) !!}
+    {!! Form::model($notification , [
+        'route' => ['MM-003', $notification->id],
+        'method' => 'post',
+        'onsubmit' => 'return submitForm()'
+    ]) !!}
         {!! Form::hidden('id', null) !!}
+        {!! Form::hidden('privateUserList', null, ['id' => 'privateUserList']) !!}
         <table class="table"> 
             <tbody> 
                 <tr> 
@@ -54,6 +73,25 @@ use App\Constants\CommonConstant;
                             'class' => 'form-control']) !!}
                         <br />
 
+                        <div style="margin-bottom: 22px">
+                            <label class="control-label">
+                                @lang('main.notification send_user')
+                            </label>
+
+                            <div id="userTags">
+                                @foreach($notification->receivers as $receiver)
+                                    <div class="tag btn" user-id="{{ $receiver->user->id }}">
+                                        {{ $receiver->user->username }}
+                                    </div>
+                                @endforeach
+                            </div>
+
+                            <button type="button" class="btn btn-default" data-toggle="modal"
+                                onclick="showUsers()">
+                                @lang('main.adding')
+                            </button>
+                        </div>
+
                         <label class="control-label">
                             @lang('main.notification send_block')
                         </label>
@@ -66,3 +104,22 @@ use App\Constants\CommonConstant;
     <br/>
 </div>
 @endsection
+
+<!-- Modal -->
+<div id="usersModal" class="modal fade" role="dialog">
+    <div class="modal-dialog">
+        <!-- Modal content-->
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal">&times;</button>
+                <h4 class="modal-title">@lang('main.admin_residential')</h4>
+            </div>
+            <div class="modal-body" id="usersContainer">
+                
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal">@lang('main.close')</button>
+            </div>
+        </div>
+    </div>
+</div>

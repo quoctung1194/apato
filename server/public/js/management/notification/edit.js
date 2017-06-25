@@ -13,6 +13,30 @@ function turnOnCalender() {
 	}
 }
 
+function showUsers()
+{
+	// show modal
+	$('#usersModal').modal();
+
+	//load user list
+	$('#usersContainer').load($('#MM-008').val());
+}
+
+function submitForm()
+{
+	let container = $('#userTags');
+	// convert to hidden field
+	let userListHidden = $('#privateUserList');
+	let values = [];
+
+	// find tag element in container
+    container.find('.tag').each(function() {
+        values.push($(this).attr('user-id')); 
+    });
+
+    userListHidden.attr('value', values.join(","));
+}
+
 //Config for CKEDITOR
 CKEDITOR.config.image_previewText = CKEDITOR.tools.repeat(' ', 100 );
 CKEDITOR.on('dialogDefinition', function(ev) {

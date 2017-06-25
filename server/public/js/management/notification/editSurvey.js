@@ -83,7 +83,22 @@ function convertToJson() {
 
 function submitForm() {
 	var form = document.getElementById('Optionsform');
-	convertToJson();
+
+	if($('input[name="id"]').val() == "") {
+		convertToJson();
+	}
+
+	let container = $('#userTags');
+	// convert to hidden field
+	let userListHidden = $('#privateUserList');
+	let values = [];
+
+	// find tag element in container
+    container.find('.tag').each(function() {
+        values.push($(this).attr('user-id')); 
+    });
+
+    userListHidden.attr('value', values.join(","));
 	
 	form.submit();
 }
