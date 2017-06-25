@@ -98,17 +98,47 @@ class NotificationController extends Controller {
 			'id' => $entity->id
 		];
 
+		$filters = [];
+		$isFirst = true;
 		// process send block or apartment
 		if(!empty($entity->block_id)) { // sending block
-			$filters = [
-				[
-					"field" => "tag",
-					"key" => "blockId",
-					"relation" => "=",
-					"value" => $entity->block_id
-				]
+			$filters[] = [
+				"field" => "tag",
+				"key" => "blockId",
+				"relation" => "=",
+				"value" => $entity->block_id
 			];
-		} else { // sending apartment
+			$isFirst = false;
+		}
+
+		if(!empty($request->privateUserList)) { // sending users
+			foreach($userIds as $id) {
+				if($id == "") {
+					continue;
+				}
+
+				if($isFirst) {
+					$filters[] = [
+						"field" => "tag",
+						"key" => "userId",
+						"relation" => "=",
+						"value" => $id
+					];
+				} else {
+					$filters[] = [
+						"operator" => "OR",
+						"field" => "tag",
+						"key" => "userId",
+						"relation" => "=",
+						"value" => $id
+					];
+				}
+
+				$isFirst = false;
+			}
+		}
+
+		if(empty($entity->block_id) && empty($request->privateUserList)) { // sending apartment
 			$filters = [
 				[
 					"field" => "tag",
@@ -270,28 +300,48 @@ class NotificationController extends Controller {
 			'title' => $entity->title,
 			'subTitle' => $entity->subTitle,
 			'remindDate' => $entity->remindDate,
-			'id' => $entity->id
+			'id' => $entity->id,
+			'isSurvey' => true,
 		];
 
+		$filters = [];
+		$isFirst = true;
 		// process send block or apartment
 		if(!empty($entity->block_id)) { // sending block
-			$filters = [
-				[
-					"field" => "tag",
-					"key" => "blockId",
-					"relation" => "=",
-					"value" => $entity->block_id
-				]
+			$filters[] = [
+				"field" => "tag",
+				"key" => "blockId",
+				"relation" => "=",
+				"value" => $entity->block_id
 			];
-		} else { // sending apartment
-			$filters = [
-				[
-					"field" => "tag",
-					"key" => "apartmentId",
-					"relation" => "=",
-					"value" => $entity->apartment_id
-				]
-			];
+			$isFirst = false;
+		}
+
+		if(!empty($request->privateUserList)) { // sending users
+			foreach($userIds as $id) {
+				if($id == "") {
+					continue;
+				}
+
+				if($isFirst) {
+					$filters[] = [
+						"field" => "tag",
+						"key" => "userId",
+						"relation" => "=",
+						"value" => $id
+					];
+				} else {
+					$filters[] = [
+						"operator" => "OR",
+						"field" => "tag",
+						"key" => "userId",
+						"relation" => "=",
+						"value" => $id
+					];
+				}
+
+				$isFirst = false;
+			}
 		}
 
 		OnesignalApi::send($params, $filters);
