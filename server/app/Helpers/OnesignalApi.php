@@ -12,10 +12,15 @@ class OnesignalApi
                 "en" => $params['title']
         );
         $remindDate = $params['remindDate'];
+
+        $isSurvey = false;
+        if(isset($params['isSurvey'])) {
+            $isSurvey = $params['isSurvey'];
+        }
     
         $fields = array(
                 'app_id' => "a475acbd-6d3a-4113-a9b7-152dce36478f",
-                'data' => array("notificationId" => $params['id']),
+                'data' => array("notificationId" => $params['id'], 'isSurvey' => $isSurvey),
                 'contents' => $content,
                 'headings' => $heading,
                 'priority' => 10,
