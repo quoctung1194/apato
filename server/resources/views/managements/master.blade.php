@@ -1,3 +1,6 @@
+<?php 
+use App\Constants\CommonConstant;
+?>
 <!DOCTYPE html>
 <html lang="en">
     <head>
@@ -13,6 +16,8 @@
         <!-- Custom styles for this template -->
         <link href="{{  URL::asset('css/dashboard.css?v=0.1') }}" rel="stylesheet">
         <link href="{{  URL::asset('resources/dateTimePicker/jquery.datetimepicker.css') }}" rel="stylesheet">
+        <!-- Font awesome -->
+        <link rel="stylesheet" href="{{ URL::asset('resources/fontAwesome/css/font-awesome.css?v=' . CommonConstant::RESOURCE_VERSION) }}">
         <!-- Javascript -->
         <script src="{{ URL::asset('js/jquery.min.js') }}"></script>
         <script src="{{ URL::asset('resources/dateTimePicker/jquery.datetimepicker.full.min.js') }}"></script>
@@ -43,25 +48,6 @@
                     {{ mb_strtoupper($apartment->name, 'UTF-8') }}
                     @endif
                     </a>
-                </div>
-                <div id="navbar" class="navbar-collapse collapse">
-                    <ul class="nav navbar-nav navbar-right">
-                        <li>
-                            <a href="#">Dashboard</a>
-                        </li>
-                        <li>
-                            <a href="#">Settings</a>
-                        </li>
-                        <li>
-                            <a href="#">Profile</a>
-                        </li>
-                        <li>
-                            <a href="#">Help</a>
-                        </li>
-                    </ul>
-                    <form class="navbar-form navbar-right">
-                        <input type="text" class="form-control" placeholder="Search...">
-                    </form>
                 </div>
             </div>
         </nav>

@@ -92,6 +92,7 @@ Route::group(['prefix' => 'management',
 		Route::post('/editSurvey', 'NotificationController@editSurvey')->name("MM-006");
 
 		Route::post('/remove', 'NotificationController@remove')->name("MM-007");
+		Route::get('/showUsers', 'NotificationController@showUsers')->name('MM-008');
 	});
 
 	Route::group(['prefix' => 'requirement'], function(){

@@ -1,7 +1,7 @@
 export default class ApiUrl {
 
-  //static ROOT = 'http://server.apato.me/public/api';
-  static ROOT = 'http://192.168.1.104/api';
+  static ROOT = 'http://server.apato.me/public/api';
+  // static ROOT = 'http://192.168.1.104/api';
 
   static LOGIN = '/login';
   static REGISTER = '/register';

@@ -107,7 +107,7 @@ class ApartmentSettingAction {
                             'floors.id as floorId',
                             'floors.name as floorName',
                             'rooms.id as roomId',
-                            'rooms.name as roomName'))
+                            'rooms.name as roomName')
 
                     ->leftJoin('floors', 'floors.block_id', '=', 'blocks.id')
                     ->leftJoin('rooms', 'rooms.floor_id', '=', 'floors.id')
@@ -116,7 +116,7 @@ class ApartmentSettingAction {
                     ->whereNull('floors.deleted_at')
                     ->whereNull('blocks.deleted_at')
 
-                    ->where('blocks.apartment_id', '=', $apartment_id)
+                    ->where('blocks.apartment_id', '=', $apartment_id);
 
         $statistics = [];
         $temps = $query->orderBy('blocks.name', 'asc')->get();

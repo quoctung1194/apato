@@ -1,6 +1,12 @@
+<?php 
+use App\Constants\CommonConstant;
+?>
 @extends('managements.master')
 
 @section('content')
+<script src="{{ URL::asset('js/management/notification/showList.js?v=' . CommonConstant::RESOURCE_VERSION) }}"></script>
+
+<input type="hidden" value="{{ route('MM-007') }}" id="MM-007" />
 
 <h1 class="page-header">@lang('main.opinion_survey')</h1>
 <div class="row placeholders">
@@ -30,27 +36,26 @@
 				<td>{{ $survey->id }}</td>
 				<td>{{ $survey->title }}</td>
 				<td>{{ $survey->created_at->format('d-m-Y') }}</td>
-				<td>Update later</td>
-				<?php
-				if(!empty($notification->remindDate)) {
-					$dateTime = strtotime($notification->remindDate);
-					$remindDate = date('d-m-Y', $dateTime);
-				} else {
-					$remindDate = "None";
-				}
-				?>
-				<td>{{ $remindDate }}</td>
+				<td>{{ $survey->createdBy->username }}</td>
 				<td>
-				<img src="http://tiko.vn/design/standard/images/copy.gif"
-					alt="Copy">
-					&nbsp; 
-				<a href="{{ route('MM-005', ['id' => $survey->id]) }}">
-					<img src="http://tiko.vn/design/standard/images/edit.gif" alt="Edit">
-				</a>
-					&nbsp;
-					<img
-					src="https://cdn2.iconfinder.com/data/icons/25-free-ui-icons/40/trash_bin-16.png"
-					alt="bin, delete, remove, trash, trash bin, trash can icon">&nbsp;
+					<?php
+						if(!empty($survey->remindDate)) {
+							$dateTime = strtotime($survey->remindDate);
+							$remindDate = date('d-m-Y', $dateTime);
+						} else {
+							$remindDate = "None";
+						}
+					?>
+					{{ $remindDate }}
+				</td>
+				<td>
+					<a href="{{ route('MM-005', ['id' => $survey->id]) }}">
+                        <i class="fa fa-pencil" aria-hidden="true" title="Edit"></i>
+                    </a>
+                    &nbsp;&nbsp;
+                    <a style="cursor:pointer" onclick="remove('{{ $survey->id }}', this)">
+                        <i class="fa fa-trash" aria-hidden="true" title="Remove"></i>
+                    </a>
 				</td>
 			</tr>
 		@endforeach

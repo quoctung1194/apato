@@ -90,9 +90,9 @@ class AdminResidentialController extends Controller {
         $validates['last_name'] = 'required|max:45';
         $validates['first_name'] = 'required|max:45';
         $validates['phone'] = 'required|max:50';
-        $validates['id_card'] = 'required|max:12';
-        $validates['magnetic_card_code'] = 'required|max:50';
-        $validates['population'] = 'required|numeric|min:1|max:255';
+        //$validates['id_card'] = 'required|max:12';
+        //$validates['magnetic_card_code'] = 'required|max:50';
+        //$validates['population'] = 'required|numeric|min:1|max:255';
         $validates['birthday'] = 'required';
         $validates['block'] = 'required';
         $validates['floor'] = 'required';

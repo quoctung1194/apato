@@ -36,4 +36,9 @@ class Notification extends Model {
 	{
 		return $this->belongsTo('App\Admin', 'created_by', 'id');
 	}
+
+	public function receivers()
+	{
+		return $this->hasMany('App\UserNotification');
+	}
 }
