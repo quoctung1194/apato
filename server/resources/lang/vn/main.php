@@ -91,7 +91,8 @@ return [
 	//Service type
 	'service_type' => 'Loại dịch vụ',
 	'service_type_name' => 'Tên loại dịch vụ',
-		
+	'service_type_order' => 'Thứ tự sort',
+	
 	//Register
 	'invalid_code' => 'Code không đúng',
 	'invalid_username' => 'Username đã tồn tại rồi',

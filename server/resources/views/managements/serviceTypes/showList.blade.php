@@ -29,6 +29,7 @@ use App\Constants\CommonConstant;
 			<tr>
 				<th width="10%">@lang('main.no')</th>
 				<th width="auto">@lang('main.type_name')</th>
+				<th width="10%">@lang('main.service_type_order')</th>
 				<th width="20%">@lang('main.option')</th>
 				<th width="0%"></th>
 			</tr>

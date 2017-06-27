@@ -25,15 +25,21 @@ class ServiceTypeAction {
 		$columns = array(
 				'id',
 				'name',
-				'none',
+				'sortOrder',
 				'created_at'
 		);
 		//Lấy ra vị trí được sort
 		$sortedIndex = $params['order']['column'];
-	
+		
 		//Tạo query truy vấn
 		$query = DB::table('service_types')
-		->whereNull('deleted_at');
+					->select('service_types.id',
+							'service_types.name',
+							'service_types.sortOrder',
+							'service_types.locked',
+							'service_types.created_at')
+					->whereNull('service_types.deleted_at');
+
 		//Tổng số record PHÙ HỢP trong database
 		$params['recordsTotal'] = $query->count();
 		//Tổng số record ĐƯỢC LỌC VÀ PHÙ HỢP trong database
